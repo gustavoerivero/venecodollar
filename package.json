@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",
@@ -14,6 +14,7 @@
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",
     "start": "npm run build && node build/index.js",
+    "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add build",
     "test": "jest",
     "test:dev": "jest --watchAll"
@@ -47,5 +48,8 @@
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
   }
 }

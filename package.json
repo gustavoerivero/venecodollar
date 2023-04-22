@@ -14,9 +14,15 @@
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",
     "start": "npm run build && node build/index.js",
+    "add-build": "git add build",
     "test": "jest",
     "test:dev": "jest --watchAll"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "author": "gustavoerivero",
   "license": "MIT",
   "homepage": "https://github.com/gustavoerivero/venecodollar#readme",

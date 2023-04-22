@@ -1,11 +1,9 @@
 # Venecodollar
 
 <div align="center">
-  <img src="https://img.shields.io/depfu/dependencies/github/gustavoerivero/venecodollar" alt="dependencies" />
-  <img src="https://img.shields.io/node/v/react-native" alt="node version" />
+  <img src="https://img.shields.io/npm/v/venecodollar" alt="npm version" />
   <img src="https://img.shields.io/github/repo-size/gustavoerivero/venecodollar" alt="project size" />
-  <img src="https://img.shields.io/github/package-json/v/gustavoerivero/venecodollar" alt="project version" />
-  <img src="https://img.shields.io/github/license/gustavoerivero/venecodollar" alt="project license" />
+  <img src="https://img.shields.io/npm/l/venecodollar" alt="project license" />
   <img src="https://img.shields.io/github/contributors/gustavoerivero/venecodollar" alt="project collabs" />
   <img src="https://img.shields.io/github/last-commit/gustavoerivero/venecodollar" alt="project last commit" />
   <img src="https://img.shields.io/github/languages/count/gustavoerivero/venecodollar" alt="project languages" />

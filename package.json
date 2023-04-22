@@ -9,7 +9,7 @@
     "Nodejs",
     "Typescript"
   ],
-  "main": "build/index.js",
+  "main": "build/main.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",

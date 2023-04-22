@@ -3,9 +3,6 @@ import cors from 'cors'
 import morgan from 'morgan'
 import routes from './routes'
 
-import { getDollarPrices, getDollarPricesWithAverage } from './controllers/CDollar'
-module.exports = { getDollarPrices, getDollarPricesWithAverage }
-
 require('dotenv').config()
 
 const port = process.env.PORT || 3030

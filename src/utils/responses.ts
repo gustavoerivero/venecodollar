@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import { AxiosResponse } from 'axios'
 
-const message = require('./messages.json')
+const message = require('./messages')
 
 /**
  * Function that generates a JSON response with an error message for HTTP 404 status code.

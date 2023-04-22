@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",
@@ -9,7 +9,7 @@
     "Nodejs",
     "Typescript"
   ],
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",

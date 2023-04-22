@@ -16,21 +16,21 @@
   <table>
       <tr>
           <!-- Do not translate this table -->
-          <td><a href="./README.md"> English </a></td>
-          <td><a href="./README-ES.md"> Spanish </a></td>
+          <td><a href="./README.md"> Inglés </a></td>
+          <td><a href="./README-ES.md"> Español </a></td>
       </tr>
   </table>
 </div>
 
-Venecodollar is a Typescript library that provides two asynchronous methods to obtain a JSON object with the different values that the dollar has assumed in bolivars.
+Venecodollar es una librería Typescript que provee dos métodos asíncronos para obtener un objeto JSON con los diferentes valores que ha asumido el dólar en bolívares.
 
-## Installation
+## Instalación
 
-To install the library, you can use the different package managers:
+Para instalar la librería, puede utilizar los diferentes gestores de paquetes:
 
 ### NPM
 
-For the case of [NPM](https://nodejs.org/en):
+Para el caso de [NPM](https://nodejs.org/es):
 
 ```bash
 npm install venecodollar
@@ -38,17 +38,17 @@ npm install venecodollar
 
 ### Yarn
 
-On the other hand, with [Yarn](https://yarnpkg.com/) it would be as follows:
+En cambio, con [Yarn](https://yarnpkg.com/) sería de la siguiente manera:
 
 ```bash
 yarn add venecodollar
 ```
 
-## Usage
+## Uso
 
-Regarding the use of the library, it is first necessary to import the methods that allow to obtain the values.
+En cuanto al uso de la librería, primero es necesario importar los métodos que permiten obtener los valores.
 
-This can be done in two ways:
+Esto se puede hacer de dos maneras:
 
 ```javascript
 import { getDollarPrices, getDollarPricesWithAverage } from 'venecodollar' 
@@ -60,7 +60,7 @@ Or
 const { getDollarPrices, getDollarPricesWithAverage } = require('venecodollar')
 ```
 
-That said, it is necessary to emphasize that both methods are asynchronous, so it is necessary to work them in async/await functions or as promises. Some examples of this can be:
+Dicho esto, hay que destacar que ambos métodos son asíncronos, por lo que es necesario trabajarlos en funciones async/await o como promesas. Algunos ejemplos de esto pueden ser:
 
 ### async/await
 
@@ -90,15 +90,15 @@ const getAverage = () => {
 }
 ```
 
-### Methods
+### Métodos
 
-The package has at its disposal two (2) methods, getDollarPrices() and getDollarPricesWithAverage().
+El paquete dispone de dos (2) métodos, getDollarPrices() y getDollarPricesWithAverage().
 
 #### getDollarPrices()
 
-This method returns two possible values. In the case of not having been able to connect to the services that provide the values, it will return null. However, if it succeeds in connecting, it will return an array with the entities in charge of monitoring the dollar value.
+Este método devuelve dos posibles valores. En el caso de no haber podido conectarse a los servicios que proporcionan los valores, devolverá null. Sin embargo, si logra conectarse, devolverá un array con las entidades encargadas de controlar el valor del dólar.
 
-Each element of the array will consist of the title of the entity, the dollar value and the date of its last update. An example of this is the following:
+Cada elemento del array estará formado por el título de la entidad, el valor del dólar y la fecha de su última actualización. Un ejemplo de esto es el siguiente:
 
 ```javascript
 [
@@ -122,7 +122,7 @@ Each element of the array will consist of the title of the entity, the dollar va
 
 #### getDollarPricesWithAverage()
 
-Similarly to getDollarPrices(), this method returns two possible values. In case of not connecting to the services, it will return the null value. On the other hand, if it does connect, it will return an object which will have the date on which the service was consulted, the average of all the entities whose dollar value is greater than zero (0) and an array with all the entities whose information is consulted. An example of this is the following:
+De forma similar a getDollarPrices(), este método devuelve dos posibles valores. En caso de no conectarse a los servicios, devolverá el valor nulo. En cambio, si se conecta, devolverá un objeto que tendrá la fecha en que se consultó el servicio, el promedio de todas las entidades cuyo valor en dólares es mayor que cero (0) y un array con todas las entidades cuya información se consulta. Un ejemplo de esto es el siguiente:
 
 ```javascript
 {
@@ -157,21 +157,21 @@ Similarly to getDollarPrices(), this method returns two possible values. In case
 }
 ```
 
-### Types
+### Tipos
 
-Likewise, the package was designed using typescript, so it is possible to make use of method typing. To do so, it is necessary to import the data types directly from your folder:
+Del mismo modo, el paquete fue diseñado utilizando typescript, por lo que es posible hacer uso de la tipificación de métodos. Para ello, es necesario importar los tipos de datos directamente desde su carpeta:
 
 ```javascript
 import { DollarType, DollarArrayType, EntityType, DollarAverageType } from 'venecodollar/src/types/DollarType' 
 ```
 
-Or
+O
 
 ```javascript
 const { DollarType, DollarArrayType, EntityType, DollarAverageType } = require('venecodollar/src/types/DollarType')
 ```
 
-As can be seen, there are four (4) data types, of which we can highlight DollarType, DollarArrayType, EntityType and DollarAverageType. 
+Como se puede observar, existen cuatro (4) tipos de datos, de los cuales podemos destacar DollarType, DollarArrayType, EntityType y DollarAverageType. 
 
 #### DollarType
 
@@ -212,15 +212,15 @@ type DollarAverageType = {
 }
 ```
 
-## Contributing
+## Contribuciones
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Se aceptan pull requests. Para cambios mayores, por favor abra un issue primero para discutir lo que le gustaría cambiar.
 
-Please make sure to update tests as appropriate.
+Por favor, asegúrese de actualizar las pruebas según corresponda.
 
-## License
+## Licencia
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ---
-⌨️ made with ❤️ by [gustavoerivero](https://github.com/gustavoerivero) 
+⌨️ hecho con ❤️ por [gustavoerivero](https://github.com/gustavoerivero) 

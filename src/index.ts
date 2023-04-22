@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use(cors())
 
-const url = `${process.env.URL}${process.env.API_VER_URL}`
+const url = `${process.env.API_VER_URL}`
 
 app.use(url, routes)
 

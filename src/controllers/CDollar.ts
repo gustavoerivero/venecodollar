@@ -27,7 +27,7 @@ const resp = require('../utils/responses')
 export const getDollarPrices = async (): Promise<DollarArrayType | null> => {
   try {
     // Fetch data from the specified URL
-    const url = process.env.BASE_URL || ''
+    const url = process.env.BASE_URL || 'https://monitordolarvenezuela.com/'
     const { data } = await axios.get(url)
 
     // Parse HTML data using Cheerio

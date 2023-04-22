@@ -20,7 +20,7 @@
   </table>
 </div>
 
-Venecodollar is a Typescript library that provides two asynchronous methods to obtain a JSON object with the different values that the dollar has assumed in bolivars.
+Venecodollar is a TypeScript library that provides two asynchronous methods to obtain a JSON object with the different values that the dollar has assumed in bolivars. This library is useful for JavaScript or TypeScript projects that need to obtain updated information about the exchange rate of the dollar in Venezuelan bolivars.
 
 ## Installation
 
@@ -157,7 +157,7 @@ Similarly to getDollarPrices(), this method returns two possible values. In case
 
 ### Types
 
-Likewise, the package was designed using typescript, so it is possible to make use of method typing. To do so, it is necessary to import the data types directly from your folder:
+Likewise, the package was designed using TypeScript, so it is possible to make use of method typing. To do so, it is necessary to import the data types directly from your folder:
 
 ```javascript
 import { DollarType, DollarArrayType, EntityType, DollarAverageType } from 'venecodollar/src/types/DollarType' 
@@ -173,7 +173,7 @@ As can be seen, there are four (4) data types, of which we can highlight DollarT
 
 #### DollarType
 
-```typescript
+```TypeScript
 type DollarType = {
   title: string
   dollar: number
@@ -183,7 +183,7 @@ type DollarType = {
 
 #### DollarArrayType
 
-```typescript
+```TypeScript
 type DollarArrayType = {
   title: string
   dollar: number
@@ -193,7 +193,7 @@ type DollarArrayType = {
 
 #### EntityType
 
-```typescript
+```TypeScript
 type EntityType = {
   entity: string
   info: DollarType
@@ -202,7 +202,7 @@ type EntityType = {
 
 #### DollarAverageType
 
-```typescript
+```TypeScript
 type DollarAverageType = {
   date: Date
   average: number

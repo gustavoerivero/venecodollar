@@ -1,27 +1,37 @@
+// Dependencies
 import express, { Response } from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 import routes from './routes'
+import swaggerDocs from './services/swagger'
+import swaggerUI from 'swagger-ui-express'
 
+// Dotenv
 require('dotenv').config()
 
+// Settings
 const port = process.env.PORT || 3030
 const app = express()
 
+// Middlewares
 app.use(express.json())
 app.use(morgan('tiny'))
 app.use(express.urlencoded({ extended: false }))
 
 app.use(cors())
 
-const url = `${process.env.API_VER_URL}`
+// Routes
+const URL = `${process.env.API_VER_URL}`
+const DOC_URL = `${process.env.API_DOC}`
 
-app.use(url, routes)
+app.use(URL, routes)
+app.use(DOC_URL, swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
-app.get(url, (_, res: Response) => res.send(`Connected!`))
+// Start server
+app.get(URL, (_, res: Response) => res.send(`Connected!`))
 
 app.listen(port, () => {
-  console.log(`Server is running on ${url}`)
+  console.log(`Server is running on ${URL}`)
 })
 
 /**

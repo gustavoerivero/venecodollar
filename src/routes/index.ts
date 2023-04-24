@@ -7,6 +7,6 @@ const router = require('express').Router()
  * @route /dolar
  * @handler require('./RDollar')
  */
-router.use('/dolar', require('./RDollar'))
+router.use('/dollar', require('./RDollar'))
 
 export default router

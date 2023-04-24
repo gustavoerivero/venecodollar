@@ -3,22 +3,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Dependencies
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
 var morgan_1 = __importDefault(require("morgan"));
 var routes_1 = __importDefault(require("./routes"));
+var swagger_1 = __importDefault(require("./services/swagger"));
+var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+// Dotenv
 require('dotenv').config();
+// Settings
 var port = process.env.PORT || 3030;
 var app = (0, express_1.default)();
+// Middlewares
 app.use(express_1.default.json());
 app.use((0, morgan_1.default)('tiny'));
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
-var url = "".concat(process.env.API_VER_URL);
-app.use(url, routes_1.default);
-app.get(url, function (_, res) { return res.send("Connected!"); });
+// Routes
+var URL = "".concat(process.env.API_VER_URL);
+var DOC_URL = "".concat(process.env.API_DOC);
+app.use(URL, routes_1.default);
+app.use(DOC_URL, swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.default));
+// Start server
+app.get(URL, function (_, res) { return res.send("Connected!"); });
 app.listen(port, function () {
-    console.log("Server is running on ".concat(url));
+    console.log("Server is running on ".concat(URL));
 });
 /**
  * This module is responsible for setting up an Express server that listens for incoming requests.

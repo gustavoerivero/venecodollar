@@ -210,6 +210,34 @@ type DollarAverageType = {
 }
 ```
 
+## API Reference
+
+The package is also deployed and works as an API for those users who do not want to or cannot incorporate it into their projects as a dependency. 
+
+To access the API they should use the path https://venecodollar.vercel.app/api/v1.
+
+Likewise, you can access the documentation made in swagger for the project located here [venecodollar API documentation](https://venecodollar.vercel.app/api/doc).
+
+#### Get all entities
+
+```http
+  GET /api/v1/dollar
+```
+
+This endpoint allows obtaining all the dollar monitoring entities with their respective name and last update date, as well as an average of all the active entities (i.e., those with a dollar value greater than zero).
+
+#### Get entities by name
+
+```http
+  GET /api/v1/dollar/entity?name=${name}
+```
+
+| Parameter | Type     | Description                                |
+| :-------- | :------- | :----------------------------------------- |
+| `name`      | `string` | **Required**. Name of entitites to fetch |
+
+This endpoint allows to obtain all the monitoring entities of the dollar by the name provided in the path parameter. If the name provided matches more than one entity, the endpoint returns an average of the values given by the entities and the information for each of these entities. If the name provided matches only one entity, the endpoint will return the information for that entity only.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

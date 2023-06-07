@@ -155,7 +155,7 @@ var calculatorBsToDollar = function (req, res) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, (0, dollar_1.calculateBsToDollar)(bs)];
             case 1:
                 prices = _c.sent();
-                if (prices && typeof entity_2 === 'string') {
+                if (prices && entity_2 && typeof entity_2 === 'string') {
                     // Filter entities based on the entity name
                     response = prices.filter(function (item) { return item.entity.includes(entity_2); });
                 }
@@ -216,7 +216,7 @@ var calculatorDollarToBs = function (req, res) { return __awaiter(void 0, void 0
                 return [4 /*yield*/, (0, dollar_1.calculateDollarToBs)(dollar)];
             case 1:
                 prices = _c.sent();
-                if (prices && typeof entity_3 === 'string') {
+                if (prices && entity_3 && typeof entity_3 === 'string') {
                     // Filter entities based on the entity name
                     response = prices.filter(function (item) { return item.entity.includes(entity_3); });
                 }

@@ -106,7 +106,7 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
     let response: any
     let prices = await calculateBsToDollar(bs)
 
-    if (prices && typeof entity === 'string') {
+    if (prices && entity && typeof entity === 'string') {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
 
@@ -165,7 +165,7 @@ export const calculatorDollarToBs = async (req: Request, res: Response): Promise
     let response: any
     let prices = await calculateDollarToBs(dollar)
 
-    if (prices && typeof entity === 'string') {
+    if (prices && entity && typeof entity === 'string') {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
 

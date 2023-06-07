@@ -35,134 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSpecificDollar = exports.getDollar = exports.getDollarPricesWithAverage = exports.getDollarPrices = void 0;
-var axios_1 = __importDefault(require("axios"));
-var updateDateFormat_1 = require("../utils/updateDateFormat");
+exports.calculatorDollarToBs = exports.calculatorBsToDollar = exports.getSpecificDollar = exports.getDollar = void 0;
+var dollar_1 = require("../services/dollar");
 require('dotenv').config();
-var cheerio = require('cheerio');
 var resp = require('../utils/responses');
-/**
- * This module is responsible for obtaining and processing dollar values in bolivars from external sources.
- * It uses Axios for making HTTP requests, Cheerio for parsing HTML, and other utility functions.
- * The types DollarArrayType, DollarAverageType, DollarType, and EntityType are imported from '../types/DollarType'.
- * The updateDateFormat function is imported from '../utils/updateDateFormat'.
- * The dotenv and responses modules are also used in this module.
- */
-/**
- * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
- *
- * @returns {Promise<DollarArrayType | null>} - A promise that resolves to an array with different dollar values
- * in bolivars given by the entities that monitor this value. Returns null if an error occurs.
- * @throws {Error} - If there is an error obtaining dollar values.
- */
-var getDollarPrices = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var url, data, cheerioData_1, formatHTML, priceResult_1, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                url = process.env.BASE_URL || 'https://monitordolarvenezuela.com/';
-                return [4 /*yield*/, axios_1.default.get(url)
-                    // Parse HTML data using Cheerio
-                ];
-            case 1:
-                data = (_a.sent()).data;
-                cheerioData_1 = cheerio.load(data);
-                formatHTML = cheerioData_1('div.row.text-center')
-                    .find('div.col-12.col-sm-4.col-md-2.col-lg-2');
-                priceResult_1 = new Array();
-                formatHTML.each(function (_, div) {
-                    var title = cheerioData_1(div)
-                        .find('h4')
-                        .text();
-                    var updatedDate = cheerioData_1(div)
-                        .find('small')
-                        .text()
-                        .split('actualizado')
-                        .pop();
-                    updatedDate = (0, updateDateFormat_1.updateDateFormat)(updatedDate);
-                    var text = cheerioData_1(div)
-                        .find('p')
-                        .text()
-                        .replace(',', '.')
-                        .split(' ')
-                        .slice(-1)
-                        .pop();
-                    var dollar = Number(text) || 0;
-                    var dollarData = {
-                        title: title,
-                        dollar: dollar,
-                        updatedDate: updatedDate
-                    };
-                    return priceResult_1.push(dollarData);
-                });
-                // Return the array of dollar values
-                return [2 /*return*/, priceResult_1];
-            case 2:
-                error_1 = _a.sent();
-                // Handle error obtaining dollar values
-                console.log("Error obtaining dollar values.", error_1);
-                // Return null if an error occurs
-                return [2 /*return*/, null];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getDollarPrices = getDollarPrices;
-/**
- * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
- * It also calculates the average of all entities with values greater than zero.
- *
- * @returns {Promise<DollarAverageType | null>} - A promise that resolves to an array with different dollar values
- * in bolivars managed by entities that monitor this value, including an average of all these entities. Returns null if an error occurs.
- * @throws {Error} - If there is an error calculating data.
- */
-var getDollarPricesWithAverage = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var priceResult, average_1, length_1, prices, response, error_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, exports.getDollarPrices)()];
-            case 1:
-                priceResult = _a.sent();
-                if (priceResult) {
-                    average_1 = 0;
-                    length_1 = 0;
-                    prices = priceResult.map(function (price) {
-                        average_1 = average_1 + price.dollar;
-                        length_1 = price.dollar > 0 ? length_1 + 1 : length_1;
-                        var entity = {
-                            entity: price.title,
-                            info: price
-                        };
-                        return entity;
-                    });
-                    response = {
-                        date: new Date(),
-                        average: Number((average_1 / length_1).toFixed(2)),
-                        entities: prices
-                    };
-                    // Return the response object
-                    return [2 /*return*/, response];
-                }
-                // Return null if priceResult is null
-                return [2 /*return*/, null];
-            case 2:
-                error_2 = _a.sent();
-                // Handle error calculating data
-                console.log("Error calculating data.", error_2);
-                // Return null if an error occurs
-                return [2 /*return*/, null];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getDollarPricesWithAverage = getDollarPricesWithAverage;
 /**
  * Fetches dollar prices with average from a remote source.
  *
@@ -172,12 +49,12 @@ exports.getDollarPricesWithAverage = getDollarPricesWithAverage;
  * @throws {Error} - If there is an error obtaining dollar values.
  */
 var getDollar = function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, error_3;
+    var response, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, exports.getDollarPricesWithAverage)()
+                return [4 /*yield*/, (0, dollar_1.getDollarPricesWithAverage)()
                     // Send successful response
                 ];
             case 1:
@@ -185,9 +62,9 @@ var getDollar = function (_, res) { return __awaiter(void 0, void 0, void 0, fun
                 // Send successful response
                 return [2 /*return*/, resp.makeResponsesOkData(res, response, 'Success')];
             case 2:
-                error_3 = _a.sent();
+                error_1 = _a.sent();
                 // Handle error obtaining dollar values
-                console.log("Error obtaining dollar values.", error_3);
+                console.log("Error obtaining dollar values.", error_1);
                 // Send error response
                 return [2 /*return*/, resp.makeResponsesError(res, 'It has been impossible to connect to the server.')];
             case 3: return [2 /*return*/];
@@ -204,12 +81,12 @@ exports.getDollar = getDollar;
  * @throws {Error} - If there is an error obtaining dollar values.
  */
 var getSpecificDollar = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var prices, entity_1, response, length_2, average_2, error_4;
+    var prices, entity_1, response, length_1, average_1, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, exports.getDollarPricesWithAverage)()];
+                return [4 /*yield*/, (0, dollar_1.getDollarPricesWithAverage)()];
             case 1:
                 prices = _a.sent();
                 entity_1 = req.query.name;
@@ -222,12 +99,73 @@ var getSpecificDollar = function (req, res) { return __awaiter(void 0, void 0, v
                     response = prices === null || prices === void 0 ? void 0 : prices.entities;
                 }
                 if (response.length > 1) {
+                    length_1 = 0;
+                    average_1 = 0;
+                    response.forEach(function (item) {
+                        if (item.info.dollar > 0) {
+                            length_1 = length_1 + 1;
+                            average_1 = item.info.dollar + average_1;
+                        }
+                    });
+                    // Calculate average dollar value and update response object
+                    response = {
+                        date: new Date(),
+                        average: average_1 !== 0 ? Number((average_1 / length_1).toFixed(2)) : 0,
+                        entities: response
+                    };
+                }
+                else {
+                    // Update response object with single entity if only one entity is found
+                    response = response.pop();
+                }
+                // Send successful response
+                return [2 /*return*/, resp.makeResponsesOkData(res, response, 'Success')];
+            case 2:
+                error_2 = _a.sent();
+                // Handle error obtaining dollar values
+                console.log("Error obtaining dollar values.", error_2);
+                // Send error response
+                return [2 /*return*/, resp.makeResponsesError(res, 'It has been impossible to connect to the server.')];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getSpecificDollar = getSpecificDollar;
+/**
+ * Fetches specific prices in dollars based on the amount of bolivars from a remote source.
+ *
+ * @param {Request} req - Express request object containing the query parameters.
+ * @param {Response} res - Express response object to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent.
+ * @throws {Error} - If there is an error obtaining dollar values.
+ */
+var calculatorBsToDollar = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var bs, entity_2, response, prices, length_2, average_2, error_3;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                bs = Number((_a = req.query.bs) !== null && _a !== void 0 ? _a : 0);
+                entity_2 = (_b = req.query.entity) !== null && _b !== void 0 ? _b : null;
+                if (!bs || bs <= 0) {
+                    return [2 /*return*/, resp.makeResponsesError(res, 'You must provide an amount to be calculated.')];
+                }
+                response = void 0;
+                return [4 /*yield*/, (0, dollar_1.calculateBsToDollar)(bs)];
+            case 1:
+                prices = _c.sent();
+                if (prices && typeof entity_2 === 'string') {
+                    // Filter entities based on the entity name
+                    response = prices.filter(function (item) { return item.entity.includes(entity_2); });
+                }
+                if (response && response.length > 1) {
                     length_2 = 0;
                     average_2 = 0;
                     response.forEach(function (item) {
-                        if (item.info.dollar > 0) {
+                        if (item.dollarCalculated > 0) {
                             length_2 = length_2 + 1;
-                            average_2 = item.info.dollar + average_2;
+                            average_2 = item.dollarCalculated + average_2;
                         }
                     });
                     // Calculate average dollar value and update response object
@@ -244,7 +182,68 @@ var getSpecificDollar = function (req, res) { return __awaiter(void 0, void 0, v
                 // Send successful response
                 return [2 /*return*/, resp.makeResponsesOkData(res, response, 'Success')];
             case 2:
-                error_4 = _a.sent();
+                error_3 = _c.sent();
+                // Handle error obtaining dollar values
+                console.log("Error obtaining dollar values.", error_3);
+                // Send error response
+                return [2 /*return*/, resp.makeResponsesError(res, 'It has been impossible to connect to the server.')];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.calculatorBsToDollar = calculatorBsToDollar;
+/**
+ * Fetches specific prices in bolivars based on the amount of dollars from a remote source.
+ *
+ * @param {Request} req - Express request object containing the query parameters.
+ * @param {Response} res - Express response object to send the response.
+ * @returns {Promise<void>} - A promise that resolves when the response is sent.
+ * @throws {Error} - If there is an error obtaining dollar values.
+ */
+var calculatorDollarToBs = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var dollar, entity_3, response, prices, length_3, average_3, error_4;
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                dollar = Number((_a = req.query.dollar) !== null && _a !== void 0 ? _a : 0);
+                entity_3 = (_b = req.query.entity) !== null && _b !== void 0 ? _b : null;
+                if (!dollar || dollar <= 0) {
+                    return [2 /*return*/, resp.makeResponsesError(res, 'You must provide an amount to be calculated.')];
+                }
+                response = void 0;
+                return [4 /*yield*/, (0, dollar_1.calculateDollarToBs)(dollar)];
+            case 1:
+                prices = _c.sent();
+                if (prices && typeof entity_3 === 'string') {
+                    // Filter entities based on the entity name
+                    response = prices.filter(function (item) { return item.entity.includes(entity_3); });
+                }
+                if (response && response.length > 1) {
+                    length_3 = 0;
+                    average_3 = 0;
+                    response.forEach(function (item) {
+                        if (item.bolivarCalculated > 0) {
+                            length_3 = length_3 + 1;
+                            average_3 = item.bolivarCalculated + average_3;
+                        }
+                    });
+                    // Calculate average dollar value and update response object
+                    response = {
+                        date: new Date(),
+                        average: average_3 !== 0 ? Number((average_3 / length_3).toFixed(2)) : 0,
+                        entities: response
+                    };
+                }
+                else {
+                    // Update response object with single entity if only one entity is found
+                    response = response.pop();
+                }
+                // Send successful response
+                return [2 /*return*/, resp.makeResponsesOkData(res, response, 'Success')];
+            case 2:
+                error_4 = _c.sent();
                 // Handle error obtaining dollar values
                 console.log("Error obtaining dollar values.", error_4);
                 // Send error response
@@ -253,4 +252,4 @@ var getSpecificDollar = function (req, res) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
-exports.getSpecificDollar = getSpecificDollar;
+exports.calculatorDollarToBs = calculatorDollarToBs;

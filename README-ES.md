@@ -49,13 +49,13 @@ En cuanto al uso de la librería, primero es necesario importar los métodos que
 Esto se puede hacer de dos maneras:
 
 ```javascript
-import { getDollarPrices, getDollarPricesWithAverage } from 'venecodollar' 
+import { getDollarPrices, getDollarPricesWithAverage, calculateBsToDollar, calculateDollarToBs } from 'venecodollar' 
 ```
 
 Or
 
 ```javascript
-const { getDollarPrices, getDollarPricesWithAverage } = require('venecodollar')
+const { getDollarPrices, getDollarPricesWithAverage, calculateBsToDollar, calculateDollarToBs } = require('venecodollar')
 ```
 
 Dicho esto, hay que destacar que ambos métodos son asíncronos, por lo que es necesario trabajarlos en funciones async/await o como promesas. Algunos ejemplos de esto pueden ser:
@@ -90,7 +90,7 @@ const getAverage = () => {
 
 ### Métodos
 
-El paquete dispone de dos (2) métodos, getDollarPrices() y getDollarPricesWithAverage().
+El paquete dispone de dos (4) métodos, getDollarPrices(), getDollarPricesWithAverage(), calculateBsToDollar(bs: number) y calculateDollarToBs(dollar: number).
 
 #### getDollarPrices()
 
@@ -155,6 +155,60 @@ De forma similar a getDollarPrices(), este método devuelve dos posibles valores
 }
 ```
 
+### calculateBsToDollar(bs: number)
+
+La respuesta retornada por este método es muy similar a getDollarPrices(), sin embargo, tiene una particularidad notoria y, es que cada entidad perteneciente al arreglo estará conformada por tres elementos muy notorios: entity, siendo el nombre de la entidad, info que contiene el título de la entidad, su valor en dólares y la fecha en que actualizó el valor y, por último, bsCalculated, que representaría el cálculo realizado para conocer el valor del monto en bolívares, pasado como parámetro en términos de dólares.
+
+```javascript
+[
+  {
+    "entity": "@MonitorDolarWeb",
+    "info": {
+      "title": "@MonitorDolarWeb",
+      "dollar": 27.43,
+      "updatedDate": "10:00 PM, 06/06/2023"
+    },
+    "dollarCalculated": 0.98
+  },
+  {
+    "entity": "@EnParaleloVzlaVip",
+    "info": {
+      "title": "@EnParaleloVzlaVip",
+      "dollar": 27.48,
+      "updatedDate": "10:00 PM, 06/06/2023"
+    },
+    "dollarCalculated": 1.10
+  }
+]
+```
+
+### calculateDollarToBs(dollar: number)
+
+Este método representaría el cálculo similar al método calculateBsToDollar pero, en lugar de calcular el valor del monto expresado en bolívares en dólares, este método mostraría las entidades con el cálculo realizado para cada una de ellas en términos de dólares.
+
+```javascript
+[
+  {
+    "entity": "@MonitorDolarWeb",
+    "info": {
+      "title": "@MonitorDolarWeb",
+      "dollar": 27.43,
+      "updatedDate": "10:00 PM, 06/06/2023"
+    },
+    "bolivarCalculated": 1371.5
+  },
+  {
+    "entity": "@EnParaleloVzlaVip",
+    "info": {
+      "title": "@EnParaleloVzlaVip",
+      "dollar": 27.48,
+      "updatedDate": "10:00 PM, 06/06/2023"
+    },
+    "bolivarCalculated": 1374
+  }
+]
+```
+
 ### Tipos
 
 Del mismo modo, el paquete fue diseñado utilizando TypeScript, por lo que es posible hacer uso de la tipificación de métodos. Para ello, es necesario importar los tipos de datos directamente desde su carpeta:
@@ -169,32 +223,32 @@ O
 const { DollarType, DollarArrayType, EntityType, DollarAverageType } = require('venecodollar/src/types/DollarType')
 ```
 
-Como se puede observar, existen cuatro (4) tipos de datos, de los cuales podemos destacar DollarType, DollarArrayType, EntityType y DollarAverageType. 
+Como se puede observar, existen ocho (8) tipos de datos, de los cuales podemos destacar TDollar, TDollarArray, TEntity, TDollarAverage, TDollarCalculated, TBsCalculated, TDollarCalculatedAverage y TBsCalculatedAverage. 
 
-#### DollarType
+#### TDollar
 
 ```TypeScript
-type DollarType = {
+type TDollar = {
   title: string
   dollar: number
   updatedDate: string
 }
 ```
 
-#### DollarArrayType
+#### TDollarArray
 
 ```TypeScript
-type DollarArrayType = {
+type TDollarArray = {
   title: string
   dollar: number
   updatedDate: string
 }[]
 ```
 
-#### EntityType
+#### TEntity
 
 ```TypeScript
-type EntityType = {
+type TEntity = {
   entity: string
   info: DollarType
 }
@@ -203,10 +257,50 @@ type EntityType = {
 #### DollarAverageType
 
 ```TypeScript
-type DollarAverageType = {
+type TDollarAverage = {
   date: Date
   average: number
-  entities: EntityType[]
+  entities: TEntity[]
+}
+```
+
+#### TDollarCalculated
+
+```TypeScript
+type TDollarCalculated = {
+  entity: string,
+  info: TDollar,
+  dollarCalculated: number
+}
+```
+
+#### TBsCalculated
+
+```TypeScript
+type TBsCalculated = {
+  entity: string,
+  info: TDollar,
+  bolivarCalculated: number
+}
+```
+
+#### TDollarCalculatedAverage
+
+```TypeScript
+type TDollarCalculatedAverage = {
+  date: Date,
+  average: number,
+  entities: TDollarCalculated[]
+}
+```
+
+#### TBsCalculatedAverage
+
+```TypeScript
+type TBsCalculatedAverage = {
+  date: Date,
+  average: number,
+  entities: TBsCalculated[]
 }
 ```
 
@@ -232,11 +326,37 @@ Este endpoint permite obtener todas las entidades de seguimiento del dólar con 
   GET /api/v1/dollar/entity?name=${name}
 ```
 
-| Parámetro Tipo Descripción
-| :-------- | :------- | :----------------------------------------- |
-| `name` | `string` | **Required**. Nombre de las entidades a obtener.
+| Parámetro Tipo Descripción |
+| :------------------------- | :------- | :----------------------------------------------- |
+| `name`                     | `string` | **Required**. Nombre de las entidades a obtener. |
 
 Este endpoint permite obtener todas las entidades de seguimiento del dólar por el nombre proporcionado en el parámetro de la ruta. Si el nombre proporcionado coincide con más de una entidad, el endpoint devuelve una media de los valores dados por las entidades y la información de cada una de estas entidades. Si el nombre proporcionado coincide sólo con una entidad, el endpoint devolverá la información sólo para esa entidad.
+
+#### Calcular Bs
+
+```http
+  GET /api/v1/dollar/toBs?dollar=${dollar}&entity={entity}
+```
+
+| Parameter | Type     | Description                                |
+| :-------- | :------- | :----------------------------------------- |
+| `dollar`      | `number` | **Required**. Monto en dólares a ser calculado en bolívares. |
+| `entity`      | `string` | Nombre de entidades a obtener |
+
+Este endpoint permite obtener todas las entidades de monitoreo de dólares calculando el valor del dólar pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
+
+#### Calcular Dólar
+
+```http
+  GET /api/v1/dollar/toDollar?bs=${bs}&entity={entity}
+```
+
+| Parameter | Type     | Description                                |
+| :-------- | :------- | :----------------------------------------- |
+| `bs`      | `number` | **Required**. Monto en bolívares a ser calculado en dólares. |
+| `entity`      | `string` | Nombre de entidades a obtener. |
+
+Este endpoint permite obtener todas las entidades de monitoreo de dólares calculando el valor del dólar pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
 
 ## Contribuciones
 

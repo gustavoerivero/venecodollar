@@ -1,5 +1,5 @@
 const router = require('express').Router()
-import { getDollar, getSpecificDollar } from '../controllers/CDollar'
+import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from '../controllers/CDollar'
 
 /**
  * @swagger
@@ -38,8 +38,68 @@ import { getDollar, getSpecificDollar } from '../controllers/CDollar'
  *        description: Not found.
  *      500:
  *        description: Internal server error.
+ * 
+ * /api/v1/dollar/toDollar?bs={amount}&entity={name}:
+ *  get:
+ *    summary: Obtain the dollar values of a bolivar amount provided by parameter.
+ *    tags:
+ *      - dollar
+ *    description: Obtain the dollar values of a bolivar amount provided by parameter.
+ *    parameters:
+ *      - name: bs
+ *        in: path
+ *        description: Bolivar amount provided.
+ *        required: true
+ *        schema:
+ *          type: number
+ *          example: 1080
+ *      - name: name
+ *        in: path
+ *        description: Name of entity to return
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '@DolarToday'
+ *    responses:
+ *      200:
+ *        description: The API request has been successful.
+ *      404:
+ *        description: Not found.
+ *      500:
+ *        description: Internal server error.
+ * 
+ * /api/v1/dollar/toBs?dollar={amount}&entity={name}:
+ *  get:
+ *    summary: Obtain the bolivar values of a dollar amount provided by parameter.
+ *    tags:
+ *      - dollar
+ *    description: Obtain the bolivar values of a dollar amount provided by parameter.
+ *    parameters:
+ *      - name: dollar
+ *        in: path
+ *        description: Dollar amount provided.
+ *        required: true
+ *        schema:
+ *          type: number
+ *          example: 1080
+ *      - name: name
+ *        in: path
+ *        description: Name of entity to return
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '@DolarToday'
+ *    responses:
+ *      200:
+ *        description: The API request has been successful.
+ *      404:
+ *        description: Not found.
+ *      500:
+ *        description: Internal server error.
  */
 router.get('/', getDollar)
 router.get('/entity', getSpecificDollar)
+router.get('/toDollar', calculatorBsToDollar)
+router.get('/toBs', calculatorDollarToBs)
 
 module.exports = router

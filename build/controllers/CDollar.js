@@ -159,6 +159,9 @@ var calculatorBsToDollar = function (req, res) { return __awaiter(void 0, void 0
                     // Filter entities based on the entity name
                     response = prices.filter(function (item) { return item.entity.includes(entity_2); });
                 }
+                else {
+                    response = prices;
+                }
                 if (response && response.length > 1) {
                     length_2 = 0;
                     average_2 = 0;
@@ -219,6 +222,9 @@ var calculatorDollarToBs = function (req, res) { return __awaiter(void 0, void 0
                 if (prices && entity_3 && typeof entity_3 === 'string') {
                     // Filter entities based on the entity name
                     response = prices.filter(function (item) { return item.entity.includes(entity_3); });
+                }
+                else {
+                    response = prices;
                 }
                 if (response && response.length > 1) {
                     length_3 = 0;

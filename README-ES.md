@@ -308,14 +308,14 @@ type TBsCalculatedAverage = {
 
 El paquete también está desplegado y funciona como API para aquellos usuarios que no quieran o no puedan incorporarlo a sus proyectos como dependencia. 
 
-Para acceder a la API deben utilizar la ruta https://venecodollar.vercel.app/api/v1.
+Para acceder a la API deben utilizar la ruta https://venecodollar.vercel.app/api/v2.
 
 Asimismo, pueden acceder a la documentación hecha en swagger para el proyecto ubicada aquí [documentación de la API venecodollar](https://venecodollar.vercel.app/api/doc).
 
 #### Obtener todas las entidades
 
 ```http
-  GET /api/v1/dollar
+  GET /api/v2/dollar
 ```
 
 Este endpoint permite obtener todas las entidades de seguimiento del dólar con su respectivo nombre y fecha de última actualización, así como una media de todas las entidades activas (es decir, las que tienen un valor del dólar superior a cero).
@@ -323,7 +323,7 @@ Este endpoint permite obtener todas las entidades de seguimiento del dólar con 
 #### Obtener entidades por un nombre
 
 ```http
-  GET /api/v1/dollar/entity?name=${name}
+  GET /api/v2/dollar/entity?name=${name}
 ```
 
 | Parámetro Tipo Descripción |
@@ -335,7 +335,7 @@ Este endpoint permite obtener todas las entidades de seguimiento del dólar por 
 #### Calcular Bs
 
 ```http
-  GET /api/v1/dollar/toBs?dollar=${dollar}&entity={entity}
+  GET /api/v2/dollar/toBs?dollar=${dollar}&entity={entity}
 ```
 
 | Parameter | Type     | Description                                |
@@ -348,7 +348,7 @@ Este endpoint permite obtener todas las entidades de monitoreo de dólares calcu
 #### Calcular Dólar
 
 ```http
-  GET /api/v1/dollar/toDollar?bs=${bs}&entity={entity}
+  GET /api/v2/dollar/toDollar?bs=${bs}&entity={entity}
 ```
 
 | Parameter | Type     | Description                                |

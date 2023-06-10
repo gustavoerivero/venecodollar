@@ -10,7 +10,7 @@ import swaggerUI from 'swagger-ui-express'
 require('dotenv').config()
 
 // Settings
-const port = process.env.PORT || 3030
+const port = process.env.PORT ?? 3030
 const app = express()
 
 // Middlewares
@@ -22,9 +22,11 @@ app.use(cors())
 
 // Routes
 const URL = `${process.env.API_VER_URL}`
+const OLD = `${process.env.API_OLD}`
 const DOC_URL = `${process.env.API_DOC}`
 
 app.use(URL, routes)
+app.use(OLD, routes)
 app.use(DOC_URL, swaggerUI.serve, swaggerUI.setup(swaggerDocs))
 
 // Start server

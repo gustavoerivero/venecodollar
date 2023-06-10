@@ -1,19 +1,21 @@
 import swaggerJsonDoc from 'swagger-jsdoc'
 
+import { name, version, repository, publicPackage } from '../../package.json'
+
 const swaggerOptions = {
   openapi: '3.0.0',
   definition: {
     info: {
-      title: 'Venecodollar API Documentation',
-      version: '1.2.0',
-      description: "This section represents the Swagger documentation of the API designed with Venecodollar's NPM package. Here it is possible to test the endpoints provided by this API.\n\nIf you wish to make use of the NPM package in your javascript or typescript project, please [click here](https://www.npmjs.com/package/venecodollar), where you will be redirected to the official Venecodollar NPM package page.",
+      title: `${name} API Documentation`,
+      version: version,
+      description: `This section represents the Swagger documentation of the API designed with ${name}'s NPM package. Here it is possible to test the endpoints provided by this API.\n\nIf you wish to make use of the NPM package in your javascript or typescript project, please [click here](${publicPackage}), where you will be redirected to the official ${name} NPM package page.`,
       contact: {
         name: 'the developer',
-        email: 'gustavoerivero12@gmail.com',
+        email: process.env.EMAIL ?? '',
       },
       license: {
         name: 'MIT',
-        url: 'https://github.com/gustavoerivero/venecodollar/blob/main/LICENSE'
+        url: `${repository.url}/blob/main/LICENSE`
       },
       schemes: ['http', 'https'],
     servers: [{ url: 'https://venecodollar.vercel.app/api/v1' }],

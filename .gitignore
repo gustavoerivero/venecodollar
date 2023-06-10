@@ -4,5 +4,3 @@ yarn.lock
 package-lock.json
 
 .env
-build
-public

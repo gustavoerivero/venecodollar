@@ -3,13 +3,19 @@
   "public": true,
   "builds": [
     {
-      "use": "@vercel/node"
+      "src": "public/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "public/**"
+        ]
+      }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/index.ts"
+      "dest": "public/index.js"
     }
   ]
 }

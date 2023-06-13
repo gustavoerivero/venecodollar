@@ -3,8 +3,8 @@
  * @param updatedDate Date in disorganized format in string type.
  * @returns {string | null} Date formatted as a string. If the parameter value is null, the null value is returned as well.
  */
-export const updateDateFormat = (updatedDate: string | null): string | null => {
-  if (!updatedDate) return null
+export const updateDateFormat = (updatedDate: string | null): string => {
+  if (!updatedDate) return ''
 
   let formatDate = updatedDate.split(' ')
 

@@ -1,8 +1,6 @@
-import axios from 'axios'
+import * as cheerio from 'cheerio'
 import { TBsCalculated, TDollar, TDollarArray, TDollarAverage, TDollarCalculated, TEntity } from '../types/TDollar'
 import { updateDateFormat } from '../utils/updateDateFormat'
-
-const cheerio = require('cheerio')
 
 /**
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
@@ -14,12 +12,19 @@ const cheerio = require('cheerio')
 export const getDollarPrices = async (): Promise<TDollarArray | null> => {
   try {
     // Fetch data from the specified URL
-    const url = process.env.BASE_URL ?? 'https://monitordolarvenezuela.com/'
-    const { data } = await axios.get(url, {
-      headers: { 
-        'Access-Control-Allow-Origin': '*' 
+    const response = await fetch('https://monitordolarvenezuela.com/', {
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
       }
     })
+
+    if (!response.ok) {
+      throw new Error('Request failed')
+    }
+
+    // Parse text response from fetch function.
+    const data = await response.text()
 
     // Parse HTML data using Cheerio
     const cheerioData = cheerio.load(data)
@@ -28,7 +33,7 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
     const formatHTML = cheerioData('div.row.text-center')
       .find('div.col-12.col-sm-4.col-md-2.col-lg-2')
 
-    const priceResult: TDollarArray = new Array()
+    const priceResult: TDollarArray = []
 
     formatHTML.each((_: number, div: any) => {
       let title = cheerioData(div)
@@ -41,7 +46,7 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
         .split('actualizado')
         .pop()
 
-      updatedDate = updateDateFormat(updatedDate)
+      updatedDate = updateDateFormat(updatedDate ?? null)
 
       let text = cheerioData(div)
         .find('p')
@@ -59,7 +64,8 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
         updatedDate: updatedDate
       }
 
-      return priceResult.push(dollarData)
+      priceResult.push(dollarData)
+
     })
 
     // Return the array of dollar values
@@ -141,7 +147,7 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsCalculated
 
     let calculatedEntities: TBsCalculated[] = []
 
-    if (entities && entities.entities && entities.entities.length > 0) {
+    if (entities?.entities && entities?.entities.length > 0) {
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
@@ -178,7 +184,7 @@ export const calculateBsToDollar = async (bs: number): Promise<TDollarCalculated
 
     let calculatedEntities: TDollarCalculated[] = []
 
-    if (entities && entities.entities && entities.entities.length > 0) {
+    if (entities?.entities && entities?.entities.length > 0) {
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,

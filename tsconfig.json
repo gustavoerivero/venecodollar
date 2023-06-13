@@ -8,20 +8,13 @@
     "sourceMap": true,
     "outDir": "public",
     "esModuleInterop": true,
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
     "lib": [
-      "es2017",
-      "es7",
-      "es6",
-      "ESNext",
+      "esnext",
       "dom"
     ],
     "resolveJsonModule": true
   },
   "exclude": [
-    "node_modules",
-    "dist",
-    "public"
+    "node_modules"
   ]
 }

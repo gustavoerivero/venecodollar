@@ -1,6 +1,7 @@
 import swaggerJsonDoc from 'swagger-jsdoc'
+import packageJson from '../../package.json'
 
-import { name, version, repository, publicPackage } from '../../package.json'
+const { name, version, repository, publicPackage } = packageJson
 
 const swaggerOptions = {
   openapi: '3.0.0',

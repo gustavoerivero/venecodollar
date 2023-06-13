@@ -1,1 +1,6 @@
-export * from './dollar'
+export {
+  getDollarPrices,
+  getDollarPricesWithAverage,
+  calculateBsToDollar,
+  calculateDollarToBs
+} from './dollar'

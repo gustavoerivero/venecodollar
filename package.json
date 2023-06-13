@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.0.8",
+  "version": "2.0.18",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",
@@ -10,11 +10,12 @@
     "Typescript"
   ],
   "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
     "dev": "DEBUG=bot* dotenv -- nodemon -e ts -x ts-node src/index.ts",
     "devWindows": "@powershell -Command $env:DEBUG='bot*';dotenv -- -- nodemon -e ts -x ts-node src/index.ts",
     "deploy-build": "ncc build src/index.ts -o public -m",
-    "package-build": "tsc --project package.tsconfig.json",
+    "package-build": "rimraf ./build && tsc --project package.tsconfig.json",
     "build": "npm run deploy-build & npm run package-build",
     "prettier": "prettier --write 'src/**/*.ts'"
   },

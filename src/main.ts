@@ -1,1 +1,6 @@
-export * from './services/index'
+export {
+  getDollarPrices,
+  getDollarPricesWithAverage,
+  calculateBsToDollar,
+  calculateDollarToBs
+} from './services'

@@ -14,8 +14,12 @@ const cheerio = require('cheerio')
 export const getDollarPrices = async (): Promise<TDollarArray | null> => {
   try {
     // Fetch data from the specified URL
-    const url = process.env.BASE_URL ?? ''
-    const { data } = await axios.get(url)
+    const url = process.env.BASE_URL ?? 'https://monitordolarvenezuela.com/'
+    const { data } = await axios.get(url, {
+      headers: { 
+        'Access-Control-Allow-Origin': '*' 
+      }
+    })
 
     // Parse HTML data using Cheerio
     const cheerioData = cheerio.load(data)
@@ -128,7 +132,7 @@ export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | nul
  */
 export const calculateDollarToBs = async (dollar: number): Promise<TBsCalculated[] | null> => {
   try {
-    
+
     if (!dollar || dollar <= 0) {
       return null
     }
@@ -165,7 +169,7 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsCalculated
  */
 export const calculateBsToDollar = async (bs: number): Promise<TDollarCalculated[] | null> => {
   try {
-    
+
     if (!bs || bs <= 0) {
       return null
     }

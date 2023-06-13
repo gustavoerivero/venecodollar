@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",
@@ -9,7 +9,7 @@
     "Nodejs",
     "Typescript"
   ],
-  "main": "src/main.ts",
+  "main": "public/index.js",
   "scripts": {
     "dev": "DEBUG=bot* dotenv -- nodemon -e ts -x ts-node src/index.ts",
     "devWindows": "@powershell -Command $env:DEBUG='bot*';dotenv -- -- nodemon -e ts -x ts-node src/index.ts",

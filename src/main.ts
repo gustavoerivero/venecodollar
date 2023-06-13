@@ -4,3 +4,5 @@ export {
   calculateBsToDollar,
   calculateDollarToBs
 } from './services'
+
+export * from './types'

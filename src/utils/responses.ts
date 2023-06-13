@@ -1,5 +1,4 @@
 import { Response } from 'express'
-import { AxiosResponse } from 'axios'
 
 const message = require('./messages')
 
@@ -47,10 +46,10 @@ function makeResponsesOk(res: Response, code?: string) {
 /**
  * Function that generates a JSON response with data, success message, and HTTP 200 status code.
  * @param res Response object from Express.
- * @param data AxiosResponse object to be included in the response.
+ * @param data Any object to be included in the response.
  * @param code Optional code parameter to specify the success message. Defaults to 'Success'.
  */
-function makeResponsesOkData(res: Response, data: AxiosResponse, code?: string) {
+function makeResponsesOkData(res: Response, data: any, code?: string) {
   const msg = {
     OK: 1,
     Data: data,

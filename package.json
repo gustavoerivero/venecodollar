@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.0.20",
+  "version": "2.0.21",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",

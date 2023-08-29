@@ -37,7 +37,7 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
 
     formatHTML.each((_: number, div: any) => {
       let title = cheerioData(div)
-        .find('h4')
+        .find('h2')
         .text()
 
       let updatedDate = cheerioData(div)

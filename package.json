@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Library to consult the different dollar values and their average in terms of bolivars.",
   "keywords": [
     "dollar",
@@ -17,7 +17,8 @@
     "deploy-build": "ncc build src/index.ts -o public -m",
     "package-build": "rimraf ./build && tsc --project package.tsconfig.json",
     "build": "npm run deploy-build & npm run package-build",
-    "prettier": "prettier --write 'src/**/*.ts'"
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "package-deploy": "npm publish --access public"
   },
   "author": "gustavoerivero",
   "license": "MIT",

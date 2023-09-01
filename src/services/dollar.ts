@@ -30,38 +30,49 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
     const cheerioData = cheerio.load(data)
 
     // Extract relevant information from the parsed HTML
-    const formatHTML = cheerioData('div.row.text-center')
-      .find('div.col-12.col-sm-4.col-md-2.col-lg-2')
+    const formatHTML = cheerioData('section.py-5')
+      .find('div.col-span-1')
 
     const priceResult: TDollarArray = []
 
     formatHTML.each((_: number, div: any) => {
       let title = cheerioData(div)
-        .find('h2')
+        .find('h3')
         .text()
 
-      let updatedDate = cheerioData(div)
+      let cheerioDate = cheerioData(div)
         .find('small')
-        .text()
-        .split('actualizado')
-        .pop()
 
-      updatedDate = updateDateFormat(updatedDate ?? null)
+      let updatedDate: string | string[] = cheerioDate
+        .text()
+        .replace('\n', '')
+        .split('actualizado:')
+        .slice(-1)
+        .join()
+        .replace('\n', ' ')
+
+      updatedDate = updatedDate.substring(0, updatedDate.length - 1).split(' ')
+
+      //updatedDate = updateDateFormat(updatedDate ?? null)
 
       let text = cheerioData(div)
-        .find('p')
+        .find('p.font-bold.text-xl')
         .text()
         .replace(',', '.')
+        .replace('=', '')
+        .replace('\n', '')
+        .replace('BBs', '')
+        .replace('Bs', '')
         .split(' ')
-        .slice(-1)
-        .pop()
+        .slice(-2, -1)
+        .join()
 
-      let dollar = Number(text) || 0
+      let dollar = Number(text ?? 0)
 
       const dollarData = {
         title: title,
         dollar: dollar,
-        updatedDate: updatedDate
+        updatedDate: `${updatedDate[0]} ${updatedDate[1]}, ${updatedDate[2]}`
       }
 
       priceResult.push(dollarData)
@@ -97,8 +108,8 @@ export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | nul
 
       // Calculate average and create entities array
       const prices = priceResult.map((price: TDollar) => {
-        average = average + price.dollar
-        length = price.dollar > 0 ? length + 1 : length
+        average = Number(average) + Number(price.dollar)
+        length = Number(price.dollar) > 0 ? length + 1 : length
 
         let entity: TEntity = {
           entity: price.title,
@@ -151,7 +162,7 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsCalculated
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          bolivarCalculated: item.info.dollar > 0 ? Number(Number(item.info.dollar * dollar).toFixed(2)) : 0
+          bolivarCalculated: Number(item.info.dollar) > 0 ? Number(Number(Number(item.info.dollar) * dollar).toFixed(2)) : 0
         })
       })
     }
@@ -188,7 +199,7 @@ export const calculateBsToDollar = async (bs: number): Promise<TDollarCalculated
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          dollarCalculated: item.info.dollar > 0 ? Number(Number(bs / item.info.dollar).toFixed(2)) : 0
+          dollarCalculated: Number(item.info.dollar) > 0 ? Number(Number(bs / Number(item.info.dollar)).toFixed(2)) : 0
         })
       })
     }

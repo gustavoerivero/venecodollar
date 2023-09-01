@@ -43,8 +43,8 @@ export type TEntity = {
  * @property {number} dollarCalculated - The value calculated in dollar terms.
  */
 export type TDollarCalculated = {
-  entity: string,
-  info: TDollar,
+  entity: string
+  info: TDollar
   dollarCalculated: number
 }
 
@@ -56,8 +56,8 @@ export type TDollarCalculated = {
  * @property {number} bolivarCalculated - The value calculated in bolivar terms.
  */
 export type TBsCalculated = {
-  entity: string,
-  info: TDollar,
+  entity: string
+  info: TDollar
   bolivarCalculated: number
 }
 
@@ -82,8 +82,8 @@ export type TDollarAverage = {
  * @property {TDollarCalculated[]} entities - The array of entities and their corresponding information for the given date.
  */
 export type TDollarCalculatedAverage = {
-  date: Date,
-  average: number,
+  date: Date
+  average: number
   entities: TDollarCalculated[]
 }
 
@@ -95,7 +95,7 @@ export type TDollarCalculatedAverage = {
  * @property {TBsCalculated[]} entities - The array of entities and their corresponding information for the given date.
  */
 export type TBsCalculatedAverage = {
-  date: Date,
-  average: number,
+  date: Date
+  average: number
   entities: TBsCalculated[]
 }

@@ -10,7 +10,7 @@ export const updateDateFormat = (updatedDate: string | null): string => {
 
   const hour = formatDate[1]
   let meridiem = ''
-  let day: string = ''
+  let day = ''
 
   const lastIndex = formatDate.length - 1
 

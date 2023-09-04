@@ -1,47 +1,47 @@
 import { Request, Response } from 'express'
 
-import { TBsDollarCalculated, TDollarCalculated, TDollarEntity } from '../types'
-import { calculateBsToDollar, calculateDollarToBs, getDollarPricesWithAverage } from '../services'
+import { TBsEuroCalculated, TEuroCalculated, TEuroEntity } from '../types'
+import { calculateBsToEuro, calculateEuroToBs, getEuroPricesWithAverage } from '../services'
 
 require('dotenv').config()
 
 const resp = require('../utils/responses')
 
 /**
- * Fetches dollar prices with average from a remote source.
+ * Fetches euro prices with average from a remote source.
  *
  * @param {Request} _ - Express request object (not used).
  * @param {Response} res - Express response object to send the response.
  * @returns {Promise<void>} - A promise that resolves when the response is sent.
- * @throws {Error} - If there is an error obtaining dollar values.
+ * @throws {Error} - If there is an error obtaining euro values.
  */
-export const getDollar = async (_: Request, res: Response): Promise<void> => {
+export const getEuro = async (_: Request, res: Response): Promise<void> => {
   try {
-    // Fetch dollar prices with average from a remote source
-    const response = await getDollarPricesWithAverage()
+    // Fetch euro prices with average from a remote source
+    const response = await getEuroPricesWithAverage()
 
     // Send successful response
     return resp.makeResponsesOkData(res, response, 'Success')
   } catch (error) {
-    // Handle error obtaining dollar values
-    console.error(`Error obtaining dollar values.`, error)
+    // Handle error obtaining euro values
+    console.error(`Error obtaining euro values.`, error)
     // Send error response
     return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
   }
 }
 
 /**
- * Fetches specific dollar prices based on the entity name from a remote source.
+ * Fetches specific euro prices based on the entity name from a remote source.
  *
  * @param {Request} req - Express request object containing the query parameters.
  * @param {Response} res - Express response object to send the response.
  * @returns {Promise<void>} - A promise that resolves when the response is sent.
- * @throws {Error} - If there is an error obtaining dollar values.
+ * @throws {Error} - If there is an error obtaining euro values.
  */
-export const getSpecificDollar = async (req: Request, res: Response): Promise<void> => {
+export const getSpecificEuro = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Fetch dollar prices with average from a remote source
-    const prices = await getDollarPricesWithAverage()
+    // Fetch euro prices with average from a remote source
+    const prices = await getEuroPricesWithAverage()
     const entity = req.query.name
     let response: any
 
@@ -56,14 +56,14 @@ export const getSpecificDollar = async (req: Request, res: Response): Promise<vo
     if (response.length > 1) {
       let length = 0
       let average = 0
-      response.forEach((item: TDollarEntity) => {
-        if (item.info.dollar > 0) {
+      response.forEach((item: TEuroEntity) => {
+        if (item.info.euro > 0) {
           length = length + 1
-          average = item.info.dollar + average
+          average = item.info.euro + average
         }
       })
 
-      // Calculate average dollar value and update response object
+      // Calculate average euro value and update response object
       response = {
         date: new Date(),
         average: average !== 0 ? Number((average / length).toFixed(2)) : 0,
@@ -78,24 +78,24 @@ export const getSpecificDollar = async (req: Request, res: Response): Promise<vo
     // Send successful response
     return resp.makeResponsesOkData(res, response, 'Success')
   } catch (error) {
-    // Handle error obtaining dollar values
-    console.error(`Error obtaining dollar values.`, error)
+    // Handle error obtaining euro values
+    console.error(`Error obtaining euro values.`, error)
     // Send error response
     return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
   }
 }
 
 /**
- * Fetches specific prices in dollars based on the amount of bolivars from a remote source.
+ * Fetches specific prices in euros based on the amount of bolivars from a remote source.
  *
  * @param {Request} req - Express request object containing the query parameters.
  * @param {Response} res - Express response object to send the response.
  * @returns {Promise<void>} - A promise that resolves when the response is sent.
- * @throws {Error} - If there is an error obtaining dollar values.
+ * @throws {Error} - If there is an error obtaining euro values.
  */
-export const calculatorBsToDollar = async (req: Request, res: Response): Promise<void> => {
+export const calculatorBsToEuro = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Obtain the amount in bolivars to be calculated in terms of dollars.
+    // Obtain the amount in bolivars to be calculated in terms of euros.
     const bs = Number(req.query.bs ?? 0)
     const entity = req.query.entity ?? null
 
@@ -104,7 +104,7 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
     }
 
     let response: any
-    let prices = await calculateBsToDollar(bs)
+    let prices = await calculateBsToEuro(bs)
 
     if (prices && entity && typeof entity === 'string') {
       // Filter entities based on the entity name
@@ -116,14 +116,14 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
     if (response && response.length > 1) {
       let length = 0
       let average = 0
-      response.forEach((item: TDollarCalculated) => {
-        if (item.dollarCalculated > 0) {
+      response.forEach((item: TEuroCalculated) => {
+        if (item.euroCalculated > 0) {
           length = length + 1
-          average = item.dollarCalculated + average
+          average = item.euroCalculated + average
         }
       })
 
-      // Calculate average dollar value and update response object
+      // Calculate average euro value and update response object
       response = {
         date: new Date(),
         average: average !== 0 ? Number((average / length).toFixed(2)) : 0,
@@ -138,33 +138,33 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
     // Send successful response
     return resp.makeResponsesOkData(res, response, 'Success')
   } catch (error) {
-    // Handle error obtaining dollar values
-    console.error(`Error obtaining dollar values.`, error)
+    // Handle error obtaining euro values
+    console.error(`Error obtaining euro values.`, error)
     // Send error response
     return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
   }
 }
 
 /**
- * Fetches specific prices in bolivars based on the amount of dollars from a remote source.
+ * Fetches specific prices in bolivars based on the amount of euros from a remote source.
  *
  * @param {Request} req - Express request object containing the query parameters.
  * @param {Response} res - Express response object to send the response.
  * @returns {Promise<void>} - A promise that resolves when the response is sent.
- * @throws {Error} - If there is an error obtaining dollar values.
+ * @throws {Error} - If there is an error obtaining euro values.
  */
-export const calculatorDollarToBs = async (req: Request, res: Response): Promise<void> => {
+export const calculatorEuroToBs = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Obtain the amount in bolivars to be calculated in terms of dollars.
-    const dollar = Number(req.query.dollar ?? 0)
+    // Obtain the amount in bolivars to be calculated in terms of euros.
+    const euro = Number(req.query.euro ?? 0)
     const entity = req.query.entity ?? null
 
-    if (!dollar || dollar <= 0) {
+    if (!euro || euro <= 0) {
       return resp.makeResponsesError(res, 'You must provide an amount to be calculated.')
     }
 
     let response: any
-    let prices = await calculateDollarToBs(dollar)
+    let prices = await calculateEuroToBs(euro)
 
     if (prices && entity && typeof entity === 'string') {
       // Filter entities based on the entity name
@@ -176,14 +176,14 @@ export const calculatorDollarToBs = async (req: Request, res: Response): Promise
     if (response && response.length > 1) {
       let length = 0
       let average = 0
-      response.forEach((item: TBsDollarCalculated) => {
+      response.forEach((item: TBsEuroCalculated) => {
         if (item.bolivarCalculated > 0) {
           length = length + 1
           average = item.bolivarCalculated + average
         }
       })
 
-      // Calculate average dollar value and update response object
+      // Calculate average euro value and update response object
       response = {
         date: new Date(),
         average: average !== 0 ? Number((average / length).toFixed(2)) : 0,
@@ -198,8 +198,8 @@ export const calculatorDollarToBs = async (req: Request, res: Response): Promise
     // Send successful response
     return resp.makeResponsesOkData(res, response, 'Success')
   } catch (error) {
-    // Handle error obtaining dollar values
-    console.error(`Error obtaining dollar values.`, error)
+    // Handle error obtaining euro values
+    console.error(`Error obtaining euro values.`, error)
     // Send error response
     return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
   }

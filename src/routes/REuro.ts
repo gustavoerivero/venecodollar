@@ -1,14 +1,14 @@
 const router = require('express').Router()
-import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from '../controllers'
+import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from '../controllers'
 
 /**
  * @swagger
- * /api/v1/dollar:
+ * /api/v1/euro:
  *  get:
- *    summary: Get the dollar values in terms of bolivars (Bs.) given by the monitoring entities and an average of the same.
+ *    summary: Get the euro values in terms of bolivars (Bs.) given by the monitoring entities and an average of the same.
  *    tags:
- *      - dollar
- *    description: Get an object which contains the date on which the query was made, an average of all the dollar values given by the queried monitoring entities and an array with the monitored entities.
+ *      - euro
+ *    description: Get an object which contains the date on which the query was made, an average of all the euro values given by the queried monitoring entities and an array with the monitored entities.
  *    responses:
  *      200:
  *        description: The API request has been successful.
@@ -17,12 +17,12 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  * 
- * /api/v1/dollar/entity?name={name}:
+ * /api/v1/euro/entity?name={name}:
  *  get:
- *    summary: Get the dollar values in terms of bolivars (Bs.) given by the control entities filtered by name and, in the event that the name coincides with more than one entity, an average of the same.
+ *    summary: Get the euro values in terms of bolivars (Bs.) given by the control entities filtered by name and, in the event that the name coincides with more than one entity, an average of the same.
  *    tags:
- *      - dollar
- *    description: Gets an object containing the entities in charge of monitoring the dollar value filtered by name. In case the name matches more than one entity, the query date and an average of all displayed entities will be returned along with the data of those entities.
+ *      - euro
+ *    description: Gets an object containing the entities in charge of monitoring the euro value filtered by name. In case the name matches more than one entity, the query date and an average of all displayed entities will be returned along with the data of those entities.
  *    parameters:
  *      - name: name
  *        in: path
@@ -39,12 +39,12 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  * 
- * /api/v1/dollar/toDollar?bs={amount}&entity={name}:
+ * /api/v1/euro/toeuro?bs={amount}&entity={name}:
  *  get:
- *    summary: Obtain the dollar values of a bolivar amount provided by parameter.
+ *    summary: Obtain the euro values of a bolivar amount provided by parameter.
  *    tags:
- *      - dollar
- *    description: Obtain the dollar values of a bolivar amount provided by parameter.
+ *      - euro
+ *    description: Obtain the euro values of a bolivar amount provided by parameter.
  *    parameters:
  *      - name: bs
  *        in: path
@@ -68,16 +68,16 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  * 
- * /api/v1/dollar/toBs?dollar={amount}&entity={name}:
+ * /api/v1/euro/toBs?euro={amount}&entity={name}:
  *  get:
- *    summary: Obtain the bolivar values of a dollar amount provided by parameter.
+ *    summary: Obtain the bolivar values of a euro amount provided by parameter.
  *    tags:
- *      - dollar
- *    description: Obtain the bolivar values of a dollar amount provided by parameter.
+ *      - euro
+ *    description: Obtain the bolivar values of a euro amount provided by parameter.
  *    parameters:
- *      - name: dollar
+ *      - name: euro
  *        in: path
- *        description: Dollar amount provided.
+ *        description: euro amount provided.
  *        required: true
  *        schema:
  *          type: number
@@ -97,9 +97,9 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  */
-router.get('/', getDollar)
-router.get('/entity', getSpecificDollar)
-router.get('/toDollar', calculatorBsToDollar)
-router.get('/toBs', calculatorDollarToBs)
+router.get('/', getEuro)
+router.get('/entity', getSpecificEuro)
+router.get('/toEuro', calculatorBsToEuro)
+router.get('/toBs', calculatorEuroToBs)
 
 module.exports = router

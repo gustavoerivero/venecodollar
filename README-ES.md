@@ -22,7 +22,7 @@
 
 Venecodollar es una librería TypeScript que proporciona dos métodos asincrónicos para obtener un objeto JSON con los diferentes valores que ha asumido el dólar en bolívares. Esta librería es útil para proyectos en JavaScript o TypeScript que requieran obtener información actualizada sobre el tipo de cambio del dólar en bolívares de Venezuela.
 
-Los datos son obtenidos desde [monitordolarvenezuela](https://monitordolarvenezuela.com/)
+Los datos son obtenidos desde [ExchangeMonitor](https://exchangemonitor.net/)
 
 ## Instalación
 

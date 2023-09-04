@@ -1,19 +1,19 @@
 import * as cheerio from 'cheerio'
-import { TBsDollarCalculated, TDollar, TDollarArray, TDollarAverage, TDollarCalculated, TDollarEntity } from '../types/TDollar'
 import { convertDate, getDate, getHour } from '../utils/formatDate'
 import { BASE_URL } from '.'
+import { TBsEuroCalculated, TEuro, TEuroArray, TEuroAverage, TEuroCalculated, TEuroEntity } from '../types'
 
 /**
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
  *
- * @returns {Promise<TDollarArray | null>} - A promise that resolves to an array with different dollar values
+ * @returns {Promise<TEuroArray | null>} - A promise that resolves to an array with different dollar values
  * in bolivars given by the entities that monitor this value. Returns null if an error occurs.
  * @throws {Error} - If there is an error obtaining dollar values.
  */
-export const getDollarPrices = async (): Promise<TDollarArray | null> => {
+export const getEuroPrices = async (): Promise<TEuroArray | null> => {
   try {
     // Fetch data from the specified URL
-    const response = await fetch(`${BASE_URL}/dolar-venezuela`, {
+    const response = await fetch(`${BASE_URL}/dolar-venezuela/EUR`, {
       mode: 'cors',
       headers: {
         'Access-Control-Allow-Origin': '*'
@@ -34,7 +34,7 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
     const formatHTML = cheerioData('div.row')
       .find('div.col-xs-12.col-sm-6.col-md-4.col-tabla')
 
-    const priceResult: TDollarArray = []
+    const priceResult: TEuroArray = []
 
     formatHTML.each((_: number, div: any) => {
 
@@ -57,20 +57,15 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
         .replace('.', '')
         .replace(',', '.')
 
-      const dollar = Number(text ?? 0)
+      const euro = Number(text ?? 0)
 
-      const image = cheerioData(div)
-        .find('img')
-        .attr('src')
-
-      const dollarData = {
-        title,
-        dollar,
-        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`,
-        image: BASE_URL + image
+      const euroData = {
+        title: title,
+        euro: euro,
+        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`
       }
 
-      priceResult.push(dollarData)
+      priceResult.push(euroData)
 
     })
 
@@ -88,25 +83,25 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value. 
  * It also calculates the average of all entities with values greater than zero.
  *
- * @returns {Promise<TAverage | null>} - A promise that resolves to an array with different dollar values
+ * @returns {Promise<TEuroAverage | null>} - A promise that resolves to an array with different dollar values
  * in bolivars managed by entities that monitor this value, including an average of all these entities. Returns null if an error occurs.
  * @throws {Error} - If there is an error calculating data.
  */
-export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | null> => {
+export const getEuroPricesWithAverage = async (): Promise<TEuroAverage | null> => {
   try {
     // Fetch dollar prices from a remote source
-    const priceResult: TDollarArray | null = await getDollarPrices()
+    const priceResult: TEuroArray | null = await getEuroPrices()
 
     if (priceResult) {
       let average = 0
       let length = 0
 
       // Calculate average and create entities array
-      const prices = priceResult.map((price: TDollar) => {
-        average = price.title !== "Petro" ? Number(average) + Number(price.dollar) : Number(average)
-        length = Number(price.dollar) > 0 && price.title !== "Petro" ? length + 1 : length
+      const prices = priceResult.map((price: TEuro) => {
+        average = price.title !== "Petro" ? Number(average) + Number(price.euro) : Number(average)
+        length = Number(price.euro) > 0 && price.title !== "Petro" ? length + 1 : length
 
-        let entity: TDollarEntity = {
+        let entity: TEuroEntity = {
           entity: price.title,
           info: price
         }
@@ -115,7 +110,7 @@ export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | nul
       })
 
       // Create response object with average and entities array
-      const response: TDollarAverage = {
+      const response: TEuroAverage = {
         date: new Date(),
         average: Number((average / length).toFixed(2)),
         entities: prices
@@ -136,28 +131,28 @@ export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | nul
 }
 
 /**
-* Fetches an array with the different values of the dollar in bolivars handled by the entities that control this value and calculates the value of the amount of dollars supplied in bolivars. 
- * @param dollar {number} - Amount in dollars to be calculated in bolivars.
+* Fetches an array with the different values of the dollar in bolivars handled by the entities that control this value and calculates the value of the amount of euros supplied in bolivars. 
+ * @param euro {number} - Amount in euros to be calculated in bolivars.
  * @returns {Promise<TBsCalculated[] | null>} - A promise that resolves to an array with different dollar values.
- * in bolivars handled by entities that control this value, along with the calculation in bolivars of the amount supplied in dollars as a parameter. Returns null if an error occurs.
+ * in bolivars handled by entities that control this value, along with the calculation in bolivars of the amount supplied in euros as a parameter. Returns null if an error occurs.
  * @throws {Error} - If there is an error calculating the data.
  */
-export const calculateDollarToBs = async (dollar: number): Promise<TBsDollarCalculated[] | null> => {
+export const calculateEuroToBs = async (euro: number): Promise<TBsEuroCalculated[] | null> => {
   try {
 
-    if (!dollar || dollar <= 0) {
+    if (!euro || euro <= 0) {
       return null
     }
 
-    const entities = await getDollarPricesWithAverage()
+    const entities = await getEuroPricesWithAverage()
 
-    let calculatedEntities: TBsDollarCalculated [] = []
+    let calculatedEntities: TBsEuroCalculated[] = []
 
     if (entities?.entities && entities?.entities.length > 0) {
-      entities.entities.forEach((item) => {
+      entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          bolivarCalculated: Number(item.info.dollar) > 0 ? Number(Number(Number(item.info.dollar) * dollar).toFixed(2)) : 0
+          bolivarCalculated: Number(item.info.euro) > 0 ? Number(Number(Number(item.info.euro) * euro).toFixed(2)) : 0
         })
       })
     }
@@ -173,28 +168,28 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsDollarCalc
 }
 
 /**
-* Fetches an array with the different values of the bolivars in dollars handled by the entities that control this value and calculates the value of the amount of bolivars supplied in dollars. 
- * @param bs {number} - Amount in bolivars to be calculated in dollars.
- * @returns {Promise<TDollarCalculated[] | null>} - A promise that resolves to an array with different dollar values.
- * in bolivars handled by entities that control this value, along with the calculation in bolivars of the amount supplied in dollars as a parameter. Returns null if an error occurs.
+* Fetches an array with the different values of the bolivars in euros handled by the entities that control this value and calculates the value of the amount of bolivars supplied in euros. 
+ * @param bs {number} - Amount in bolivars to be calculated in euros.
+ * @returns {Promise<TEuroCalculated[] | null>} - A promise that resolves to an array with different dollar values.
+ * in bolivars handled by entities that control this value, along with the calculation in bolivars of the amount supplied in euros as a parameter. Returns null if an error occurs.
  * @throws {Error} - If there is an error calculating the data.
  */
-export const calculateBsToDollar = async (bs: number): Promise<TDollarCalculated[] | null> => {
+export const calculateBsToEuro = async (bs: number): Promise<TEuroCalculated[] | null> => {
   try {
 
     if (!bs || bs <= 0) {
       return null
     }
 
-    const entities = await getDollarPricesWithAverage()
+    const entities = await getEuroPricesWithAverage()
 
-    let calculatedEntities: TDollarCalculated[] = []
+    let calculatedEntities: TEuroCalculated[] = []
 
     if (entities?.entities && entities?.entities.length > 0) {
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          dollarCalculated: Number(item.info.dollar) > 0 ? Number(Number(bs / Number(item.info.dollar)).toFixed(2)) : 0
+          euroCalculated: Number(item.info.euro) > 0 ? Number(Number(bs / Number(item.info.euro)).toFixed(2)) : 0
         })
       })
     }

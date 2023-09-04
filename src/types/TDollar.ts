@@ -4,12 +4,14 @@
  * @property {string} title - The title or name of the entity that monitors the dollar value.
  * @property {number} dollar - The value of the dollar in bolivars.
  * @property {string} updatedDate - The date when the dollar value was last updated.
+ * @property {string} image - The image of the entity.
  */
 export type TDollar = {
-  title: string
-  dollar: number
-  updatedDate: string
-}
+  title: string;
+  dollar: number;
+  updatedDate: string;
+  image?: string;
+};
 
 /**
  * Represents a type for an array of dollar values in bolivars.
@@ -17,12 +19,14 @@ export type TDollar = {
  * @property {string} title - The title or name of the entity that monitors the dollar value.
  * @property {number} dollar - The value of the dollar in bolivars.
  * @property {string} updatedDate - The date when the dollar value was last updated.
+ * @property {string} image - The image of the entity.
  */
 export type TDollarArray = {
-  title: string
-  dollar: number
-  updatedDate: string
-}[]
+  title: string;
+  dollar: number;
+  updatedDate: string;
+  image?: string;
+}[];
 
 /**
  * Represents a type for entities that monitor the dollar value and their corresponding information.
@@ -30,10 +34,10 @@ export type TDollarArray = {
  * @property {string} entity - The name of the entity that monitors the dollar value.
  * @property {TDollar} info - The information about the dollar value for the entity.
  */
-export type TEntity = {
-  entity: string
-  info: TDollar
-}
+export type TDollarEntity = {
+  entity: string;
+  info: TDollar;
+};
 
 /**
  * Represents a type for entities that control the value of the dollar, its corresponding information and the respective calculation.
@@ -43,10 +47,10 @@ export type TEntity = {
  * @property {number} dollarCalculated - The value calculated in dollar terms.
  */
 export type TDollarCalculated = {
-  entity: string
-  info: TDollar
-  dollarCalculated: number
-}
+  entity: string;
+  info: TDollar;
+  dollarCalculated: number;
+};
 
 /**
  * Represents a type for entities that control the value of the dollar, its corresponding information and the respective calculation.
@@ -55,11 +59,11 @@ export type TDollarCalculated = {
  * @property {TDollar} info - The information about the dollar value for the entity.
  * @property {number} bolivarCalculated - The value calculated in bolivar terms.
  */
-export type TBsCalculated = {
-  entity: string
-  info: TDollar
-  bolivarCalculated: number
-}
+export type TBsDollarCalculated = {
+  entity: string;
+  info: TDollar;
+  bolivarCalculated: number;
+};
 
 /**
  * Represents a type for average dollar values in bolivars for a specific date.
@@ -69,10 +73,10 @@ export type TBsCalculated = {
  * @property {TEntity[]} entities - The array of entities and their corresponding information for the given date.
  */
 export type TDollarAverage = {
-  date: Date
-  average: number
-  entities: TEntity[]
-}
+  date: Date;
+  average: number;
+  entities: TDollarEntity[];
+};
 
 /**
  * Represents a type for average dollar values in bolivars for a specific date.
@@ -82,10 +86,10 @@ export type TDollarAverage = {
  * @property {TDollarCalculated[]} entities - The array of entities and their corresponding information for the given date.
  */
 export type TDollarCalculatedAverage = {
-  date: Date
-  average: number
-  entities: TDollarCalculated[]
-}
+  date: Date;
+  average: number;
+  entities: TDollarCalculated[];
+};
 
 /**
  * Represents a type for average dollar values in bolivars for a specific date.
@@ -94,8 +98,8 @@ export type TDollarCalculatedAverage = {
  * @property {number} average - The average value of the dollar in bolivars for the given date.
  * @property {TBsCalculated[]} entities - The array of entities and their corresponding information for the given date.
  */
-export type TBsCalculatedAverage = {
-  date: Date
-  average: number
-  entities: TBsCalculated[]
-}
+export type TBsDollarCalculatedAverage = {
+  date: Date;
+  average: number;
+  entities: TBsDollarCalculated[];
+};

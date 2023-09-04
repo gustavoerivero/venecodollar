@@ -22,7 +22,7 @@
 
 Venecodollar is a TypeScript library that provides two asynchronous methods to obtain a JSON object with the different values that the dollar has assumed in bolivars. This library is useful for JavaScript or TypeScript projects that need to obtain updated information about the exchange rate of the dollar in Venezuelan bolivars.
 
-The data is obtained from [monitordolarvenezuela](https://monitordolarvenezuela.com/)
+The data is obtained from [ExchangeMonitor](https://exchangemonitor.net/)
 
 ## Installation
 

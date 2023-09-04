@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "Library to consult the different dollar values and their average in terms of bolivars. The data is obtained from https://monitordolarvenezuela.com/",
   "keywords": [
     "dollar",

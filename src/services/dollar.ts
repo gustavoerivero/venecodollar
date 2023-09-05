@@ -157,7 +157,7 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsDollarCalc
       entities.entities.forEach((item) => {
         calculatedEntities.push({
           ...item,
-          bolivarCalculated: Number(item.info.dollar) > 0 ? Number(Number(Number(item.info.dollar) * dollar).toFixed(2)) : 0
+          bolivarCalculated: Number(item.info.dollar) > 0 && item.info.title !== "Petro" ? Number(Number(Number(item.info.dollar) * dollar).toFixed(2)) : 0
         })
       })
     }
@@ -194,7 +194,7 @@ export const calculateBsToDollar = async (bs: number): Promise<TDollarCalculated
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          dollarCalculated: Number(item.info.dollar) > 0 ? Number(Number(bs / Number(item.info.dollar)).toFixed(2)) : 0
+          dollarCalculated: Number(item.info.dollar) > 0 && item.info.title !== "Petro" ? Number(Number(bs / Number(item.info.dollar)).toFixed(2)) : 0
         })
       })
     }

@@ -58,11 +58,16 @@ export const getEuroPrices = async (): Promise<TEuroArray | null> => {
         .replace(',', '.')
 
       const euro = Number(text ?? 0)
+      
+      const image = cheerioData(div)
+        .find('img')
+        .attr('src')
 
       const euroData = {
         title: title,
         euro: euro,
-        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`
+        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`,
+        image: BASE_URL + image
       }
 
       priceResult.push(euroData)
@@ -152,7 +157,7 @@ export const calculateEuroToBs = async (euro: number): Promise<TBsEuroCalculated
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          bolivarCalculated: Number(item.info.euro) > 0 ? Number(Number(Number(item.info.euro) * euro).toFixed(2)) : 0
+          bolivarCalculated: Number(item.info.euro) > 0 && item.info.title !== "Petro" ? Number(Number(Number(item.info.euro) * euro).toFixed(2)) : 0
         })
       })
     }
@@ -189,7 +194,7 @@ export const calculateBsToEuro = async (bs: number): Promise<TEuroCalculated[] |
       entities.entities.forEach(item => {
         calculatedEntities.push({
           ...item,
-          euroCalculated: Number(item.info.euro) > 0 ? Number(Number(bs / Number(item.info.euro)).toFixed(2)) : 0
+          euroCalculated: Number(item.info.euro) > 0 && item.info.title !== "Petro" ? Number(Number(bs / Number(item.info.euro)).toFixed(2)) : 0
         })
       })
     }

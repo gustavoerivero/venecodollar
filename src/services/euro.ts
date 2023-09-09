@@ -1,16 +1,16 @@
 import * as cheerio from 'cheerio'
-import { convertDate, getDate, getHour } from '../utils/formatDate'
+import { before24hours, convertDate, getDate, getHour } from '../utils/formatDate'
 import { BASE_URL } from '.'
-import { TBsEuroCalculated, TEuro, TEuroArray, TEuroAverage, TEuroCalculated, TEuroEntity } from '../types'
+import { TBsEuroCalculated, TEuro, TEuroAverage, TEuroCalculated, TEuroEntity } from '../types'
 
 /**
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
  *
- * @returns {Promise<TEuroArray | null>} - A promise that resolves to an array with different dollar values
+ * @returns {Promise<TEuro[] | null>} - A promise that resolves to an array with different dollar values
  * in bolivars given by the entities that monitor this value. Returns null if an error occurs.
  * @throws {Error} - If there is an error obtaining dollar values.
  */
-export const getEuroPrices = async (): Promise<TEuroArray | null> => {
+export const getEuroPrices = async (): Promise<TEuro[] | null> => {
   try {
     // Fetch data from the specified URL
     const response = await fetch(`${BASE_URL}/dolar-venezuela/EUR`, {
@@ -34,7 +34,7 @@ export const getEuroPrices = async (): Promise<TEuroArray | null> => {
     const formatHTML = cheerioData('div.row')
       .find('div.col-xs-12.col-sm-6.col-md-4.col-tabla')
 
-    const priceResult: TEuroArray = []
+    const priceResult: TEuro[] = []
 
     formatHTML.each((_: number, div: any) => {
 
@@ -51,6 +51,10 @@ export const getEuroPrices = async (): Promise<TEuroArray | null> => {
       const hour = getHour(dateFormat);
       const date = getDate(dateFormat);
 
+      const updatedDate = before24hours(dateFormat) ? 
+      `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`
+      : `${date?.dayWeek} ${date?.day} de ${date?.month}, ${date?.year}`
+
       const text = cheerioData(div)
         .find('p.precio')
         .text()
@@ -62,12 +66,27 @@ export const getEuroPrices = async (): Promise<TEuroArray | null> => {
       const image = cheerioData(div)
         .find('img')
         .attr('src')
+        
+      const difference = cheerioData(div)
+      .find("p.cambio-num")
+      .text()
+      .replace(",", ".")
+    
+      const [tendency, percentage] = cheerioData(div)
+        .find("p.cambio-por")
+        .text()
+        .replace(",", ".")
+        .split(" ")
 
-      const euroData = {
+      const euroData: TEuro = {
         title: title,
         euro: euro,
-        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`,
-        image: BASE_URL + image
+        updatedDate,
+        image: BASE_URL + image,
+        difference: Number(difference ?? 0),
+        differencePercentage: percentage,
+        tendency: tendency === "▲" ? "Uptrend" : tendency === "▼" ? "Downtrend" : "Unchanged",
+        tendencyColor: tendency === "▲" ? "green" : tendency === "▼" ? "red" : "gray"
       }
 
       priceResult.push(euroData)
@@ -95,7 +114,7 @@ export const getEuroPrices = async (): Promise<TEuroArray | null> => {
 export const getEuroPricesWithAverage = async (): Promise<TEuroAverage | null> => {
   try {
     // Fetch dollar prices from a remote source
-    const priceResult: TEuroArray | null = await getEuroPrices()
+    const priceResult: TEuro[] | null = await getEuroPrices()
 
     if (priceResult) {
       let average = 0

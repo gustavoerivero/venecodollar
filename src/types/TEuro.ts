@@ -11,22 +11,11 @@ export type TEuro = {
   euro: number;
   updatedDate: string;
   image?: string;
+  difference?: number;
+  differencePercentage?: string;
+  tendency?: string;
+  tendencyColor?: string;
 };
-
-/**
- * Represents a type for an array of euro values in bolivars.
- *
- * @property {string} title - The title or name of the entity that monitors the euro value.
- * @property {number} euro - The value of the euro in bolivars.
- * @property {string} updatedDate - The date when the euro value was last updated.
- * @property {string} image - The image of the entity.
- */
-export type TEuroArray = {
-  title: string;
-  euro: number;
-  updatedDate: string;
-  image?: string;
-}[];
 
 /**
  * Represents a type for entities that monitor the euro value and their corresponding information.

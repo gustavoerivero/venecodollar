@@ -106,6 +106,35 @@ export const formatDate = (date: string | Date | null): string => {
   }
 }
 
+/**
+ * Method to check if the given date is within the last 24 hours.
+ * @param {string | Date | null} date - The date to be checked.
+ * @returns {boolean} True if the date is within the last 24 hours, false otherwise.
+ * @throws {Error} If the date value is missing or in an invalid format.
+ */
+export const before24hours = (date: string | Date | null): boolean => {
+  try {
+    if (!date) {
+      throw Error("The date value must exist in date or string format.")
+    }
+
+    let postDate: Date
+
+    if (typeof date === "string") {
+      postDate = new Date(date)
+    } else {
+      postDate = date
+    }
+
+    let currentDate = new Date()
+
+    return currentDate.getTime() - postDate.getTime() < 86400000
+    
+  } catch (error) {
+    throw Error(`It was not possible to verify if the date is less than 24 hours from its existence: ${error}`)
+  }
+}
+
 export const convertDate = (text: string) => {
   const [_, period] = text.split("Actualizó hace");
 

@@ -1,27 +1,27 @@
-import * as cheerio from 'cheerio'
-import { TBsDollarCalculated, TDollar, TDollarArray, TDollarAverage, TDollarCalculated, TDollarEntity } from '../types/TDollar'
-import { convertDate, getDate, getHour } from '../utils/formatDate'
-import { BASE_URL } from '.'
+import * as cheerio from "cheerio"
+import { TBsDollarCalculated, TDollar, TDollarAverage, TDollarCalculated, TDollarEntity } from "../types/TDollar"
+import { before24hours, convertDate, getDate, getHour } from "../utils/formatDate"
+import { BASE_URL } from "."
 
 /**
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
  *
- * @returns {Promise<TDollarArray | null>} - A promise that resolves to an array with different dollar values
+ * @returns {Promise<TDollar[] | null>} - A promise that resolves to an array with different dollar values
  * in bolivars given by the entities that monitor this value. Returns null if an error occurs.
  * @throws {Error} - If there is an error obtaining dollar values.
  */
-export const getDollarPrices = async (): Promise<TDollarArray | null> => {
+export const getDollarPrices = async (): Promise<TDollar[] | null> => {
   try {
     // Fetch data from the specified URL
     const response = await fetch(`${BASE_URL}/dolar-venezuela`, {
-      mode: 'cors',
+      mode: "cors",
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        "Access-Control-Allow-Origin": "*"
       }
     })
 
     if (!response.ok) {
-      throw new Error('Request failed')
+      throw new Error("Request failed")
     }
 
     // Parse text response from fetch function.
@@ -31,19 +31,19 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
     const cheerioData = cheerio.load(data)
 
     // Extract relevant information from the parsed HTML
-    const formatHTML = cheerioData('div.row')
-      .find('div.col-xs-12.col-sm-6.col-md-4.col-tabla')
+    const formatHTML = cheerioData("div.row")
+      .find("div.col-xs-12.col-sm-6.col-md-4.col-tabla")
 
-    const priceResult: TDollarArray = []
+    const priceResult: TDollar[] = []
 
     formatHTML.each((_: number, div: any) => {
 
       const title = cheerioData(div)
-        .find('h6.nombre')
+        .find("h6.nombre")
         .text()
 
       const cheerioDate = cheerioData(div)
-        .find('p.fecha')
+        .find("p.fecha")
         .text()
 
       let dateFormat = convertDate(cheerioDate)
@@ -51,23 +51,42 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
       const hour = getHour(dateFormat);
       const date = getDate(dateFormat);
 
+      const updatedDate = before24hours(dateFormat) ? 
+      `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`
+      : `${date?.dayWeek} ${date?.day} de ${date?.month}, ${date?.year}`
+
       const text = cheerioData(div)
-        .find('p.precio')
+        .find("p.precio")
         .text()
-        .replace('.', '')
-        .replace(',', '.')
+        .replace(".", "")
+        .replace(",", ".")
 
       const dollar = Number(text ?? 0)
 
       const image = cheerioData(div)
-        .find('img')
-        .attr('src')
+        .find("img")
+        .attr("src")
 
-      const dollarData = {
+      const difference = cheerioData(div)
+        .find("p.cambio-num")
+        .text()
+        .replace(",", ".")
+      
+        const [tendency, percentage] = cheerioData(div)
+          .find("p.cambio-por")
+          .text()
+          .replace(",", ".")
+          .split(" ")
+
+      const dollarData: TDollar = {
         title,
         dollar,
-        updatedDate: `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`,
-        image: BASE_URL + image
+        updatedDate,
+        image: BASE_URL + image,
+        difference: Number(difference ?? 0),
+        differencePercentage: percentage,
+        tendency: tendency === "▲" ? "Uptrend" : tendency === "▼" ? "Downtrend" : "Unchanged",
+        tendencyColor: tendency === "▲" ? "green" : tendency === "▼" ? "red" : "gray"
       }
 
       priceResult.push(dollarData)
@@ -95,7 +114,7 @@ export const getDollarPrices = async (): Promise<TDollarArray | null> => {
 export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | null> => {
   try {
     // Fetch dollar prices from a remote source
-    const priceResult: TDollarArray | null = await getDollarPrices()
+    const priceResult: TDollar[] | null = await getDollarPrices()
 
     if (priceResult) {
       let average = 0

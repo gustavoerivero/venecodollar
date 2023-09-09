@@ -1,7 +1,7 @@
 {
   "name": "venecodollar",
-  "version": "2.2.1",
-  "description": "Library to consult the different dollar values and their average in terms of bolivars. The data is obtained from https://monitordolarvenezuela.com/",
+  "version": "2.2.2",
+  "description": "Library to consult the different dollar and euro values and their average in terms of bolivars. The data is obtained from https://monitordolarvenezuela.com/",
   "keywords": [
     "dollar",
     "Venezuela",
@@ -17,6 +17,7 @@
     "deploy-build": "ncc build src/index.ts -o public -m",
     "package-build": "rimraf ./build && tsc --project package.tsconfig.json",
     "build": "npm run deploy-build & npm run package-build",
+    "build:start": "npm run deploy-build & npm run package-build & @powershell -Command $env:DEBUG='bot*';dotenv -- -- nodemon -e ts -x ts-node src/index.ts",
     "prettier": "prettier --write 'src/**/*.ts'",
     "package-deploy": "npm publish --access public"
   },

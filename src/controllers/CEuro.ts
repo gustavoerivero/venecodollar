@@ -1,11 +1,10 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express"
 
-import { TBsEuroCalculated, TEuroCalculated, TEuroEntity } from '../types'
-import { calculateBsToEuro, calculateEuroToBs, getEuroPricesWithAverage } from '../services'
+import { TBsEuroCalculated, TEuroCalculated, TEuroEntity } from "../types"
+import { calculateBsToEuro, calculateEuroToBs, getEuroPricesWithAverage } from "../services"
+import * as resp from "../utils/responses"
 
-require('dotenv').config()
-
-const resp = require('../utils/responses')
+require("dotenv").config()
 
 /**
  * Fetches euro prices with average from a remote source.
@@ -21,12 +20,12 @@ export const getEuro = async (_: Request, res: Response): Promise<void> => {
     const response = await getEuroPricesWithAverage()
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining euro values
     console.error(`Error obtaining euro values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -45,7 +44,7 @@ export const getSpecificEuro = async (req: Request, res: Response): Promise<void
     const entity = req.query.name
     let response: any
 
-    if (prices && typeof entity === 'string') {
+    if (prices && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.entities.filter(item => item.entity.includes(entity))
 
@@ -76,12 +75,12 @@ export const getSpecificEuro = async (req: Request, res: Response): Promise<void
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining euro values
     console.error(`Error obtaining euro values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -100,13 +99,13 @@ export const calculatorBsToEuro = async (req: Request, res: Response): Promise<v
     const entity = req.query.entity ?? null
 
     if (!bs || bs <= 0) {
-      return resp.makeResponsesError(res, 'You must provide an amount to be calculated.')
+      return resp.makeResponsesError(res, new Error("You must provide an amount to be calculated."))
     }
 
     let response: any
     let prices = await calculateBsToEuro(bs)
 
-    if (prices && entity && typeof entity === 'string') {
+    if (prices && entity && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
     } else {
@@ -136,12 +135,12 @@ export const calculatorBsToEuro = async (req: Request, res: Response): Promise<v
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining euro values
     console.error(`Error obtaining euro values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -160,13 +159,13 @@ export const calculatorEuroToBs = async (req: Request, res: Response): Promise<v
     const entity = req.query.entity ?? null
 
     if (!euro || euro <= 0) {
-      return resp.makeResponsesError(res, 'You must provide an amount to be calculated.')
+      return resp.makeResponsesError(res, new Error("You must provide an amount to be calculated."))
     }
 
     let response: any
     let prices = await calculateEuroToBs(euro)
 
-    if (prices && entity && typeof entity === 'string') {
+    if (prices && entity && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
     } else {
@@ -196,11 +195,11 @@ export const calculatorEuroToBs = async (req: Request, res: Response): Promise<v
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining euro values
     console.error(`Error obtaining euro values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }

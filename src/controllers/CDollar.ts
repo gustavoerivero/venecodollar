@@ -1,11 +1,12 @@
-import { Request, Response } from 'express'
+import { Request, Response } from "express"
 
-import { TBsDollarCalculated, TDollarCalculated, TDollarEntity } from '../types'
-import { calculateBsToDollar, calculateDollarToBs, getDollarPricesWithAverage } from '../services'
+import { TBsDollarCalculated, TDollarCalculated, TDollarEntity } from "../types"
+import { calculateBsToDollar, calculateDollarToBs, getDollarPricesWithAverage } from "../services"
+import * as resp from "../utils/responses"
 
-require('dotenv').config()
+require("dotenv").config()
 
-const resp = require('../utils/responses')
+
 
 /**
  * Fetches dollar prices with average from a remote source.
@@ -21,12 +22,12 @@ export const getDollar = async (_: Request, res: Response): Promise<void> => {
     const response = await getDollarPricesWithAverage()
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining dollar values
     console.error(`Error obtaining dollar values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -45,7 +46,7 @@ export const getSpecificDollar = async (req: Request, res: Response): Promise<vo
     const entity = req.query.name
     let response: any
 
-    if (prices && typeof entity === 'string') {
+    if (prices && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.entities.filter(item => item.entity.includes(entity))
 
@@ -70,18 +71,25 @@ export const getSpecificDollar = async (req: Request, res: Response): Promise<vo
         entities: response
       }
 
-    } else {
+    } else if (response && response.length === 1) {
       // Update response object with single entity if only one entity is found
       response = response.pop()
+    } else {
+      // Update response object with simple data.
+      response = {
+        date: new Date(),
+        entities: null,
+      }
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
+
   } catch (error) {
     // Handle error obtaining dollar values
     console.error(`Error obtaining dollar values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -100,13 +108,13 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
     const entity = req.query.entity ?? null
 
     if (!bs || bs <= 0) {
-      return resp.makeResponsesError(res, 'You must provide an amount to be calculated.')
+      return resp.makeResponsesError(res, new Error("You must provide an amount to be calculated."))
     }
 
     let response: any
     let prices = await calculateBsToDollar(bs)
 
-    if (prices && entity && typeof entity === 'string') {
+    if (prices && entity && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
     } else {
@@ -130,18 +138,24 @@ export const calculatorBsToDollar = async (req: Request, res: Response): Promise
         entities: response
       }
 
-    } else {
+    } else if (response && response.length === 1) {
       // Update response object with single entity if only one entity is found
       response = response.pop()
+    } else {
+      // Update response object with simple data.
+      response = {
+        date: new Date(),
+        entities: null,
+      }
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining dollar values
     console.error(`Error obtaining dollar values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }
 
@@ -160,13 +174,13 @@ export const calculatorDollarToBs = async (req: Request, res: Response): Promise
     const entity = req.query.entity ?? null
 
     if (!dollar || dollar <= 0) {
-      return resp.makeResponsesError(res, 'You must provide an amount to be calculated.')
+      return resp.makeResponsesError(res, new Error("You must provide an amount to be calculated."))
     }
 
     let response: any
     let prices = await calculateDollarToBs(dollar)
 
-    if (prices && entity && typeof entity === 'string') {
+    if (prices && entity && typeof entity === "string") {
       // Filter entities based on the entity name
       response = prices.filter(item => item.entity.includes(entity))
     } else {
@@ -190,17 +204,23 @@ export const calculatorDollarToBs = async (req: Request, res: Response): Promise
         entities: response
       }
 
-    } else {
+    } else if (response && response.length === 1) {
       // Update response object with single entity if only one entity is found
       response = response.pop()
+    } else {
+      // Update response object with simple data.
+      response = {
+        date: new Date(),
+        entities: null,
+      }
     }
 
     // Send successful response
-    return resp.makeResponsesOkData(res, response, 'Success')
+    return resp.makeResponsesOkData(res, response, "Success")
   } catch (error) {
     // Handle error obtaining dollar values
     console.error(`Error obtaining dollar values.`, error)
     // Send error response
-    return resp.makeResponsesError(res, 'It has been impossible to connect to the server.')
+    return resp.makeResponsesError(res, new Error("It has been impossible to connect to the server."))
   }
 }

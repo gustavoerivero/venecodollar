@@ -1,18 +1,21 @@
-import { Response } from 'express'
-
-const message = require('./messages')
+import { Response } from "express"
+import messages from "./messages"
 
 /**
  * Function that generates a JSON response with an error message for HTTP 404 status code.
  * @param res Response object from Express.
  * @param err Error object to be included in the response.
- * @param code Optional code parameter to specify the error message. Defaults to 'UnexpectedError'.
+ * @param code Optional code parameter to specify the error message. Defaults to "UnexpectedError".
  */
-function makeResponsesError(res: Response, err: Error, code?: string) {
+export const makeResponsesError = (
+  res: Response,
+  err: Error,
+  code?: "Success" | "UnexpectedError" | "Error"
+) => {
   const msg = {
     OK: 0,
     Error: err,
-    Message: message[code || 'UnexpectedError']
+    Message: messages[code ?? "UnexpectedError"]
   }
   res.status(404).json(msg)
 }
@@ -22,7 +25,10 @@ function makeResponsesError(res: Response, err: Error, code?: string) {
  * @param res Response object from Express.
  * @param err Error object to be included in the response.
  */
-function makeResponsesException(res: Response, err: Error) {
+export const makeResponsesException = (
+  res: Response,
+  err: Error
+) => {
   const msg = {
     OK: 0,
     Message: err
@@ -33,12 +39,15 @@ function makeResponsesException(res: Response, err: Error) {
 /**
  * Function that generates a JSON response with a success message for HTTP 200 status code.
  * @param res Response object from Express.
- * @param code Optional code parameter to specify the success message. Defaults to 'Success'.
+ * @param code Optional code parameter to specify the success message. Defaults to "Success".
  */
-function makeResponsesOk(res: Response, code?: string) {
+export const makeResponsesOk = (
+  res: Response,
+  code?: "Success" | "UnexpectedError" | "Error"
+) => {
   const msg = {
     OK: 1,
-    Message: message[code || 'Success']
+    Message: messages[code ?? "Success"]
   }
   res.status(200).json(msg)
 }
@@ -47,20 +56,17 @@ function makeResponsesOk(res: Response, code?: string) {
  * Function that generates a JSON response with data, success message, and HTTP 200 status code.
  * @param res Response object from Express.
  * @param data Any object to be included in the response.
- * @param code Optional code parameter to specify the success message. Defaults to 'Success'.
+ * @param code Optional code parameter to specify the success message. Defaults to "Success".
  */
-function makeResponsesOkData(res: Response, data: any, code?: string) {
+export const makeResponsesOkData = (
+  res: Response,
+  data: any,
+  code?: "Success" | "UnexpectedError" | "Error"
+) => {
   const msg = {
     OK: 1,
     Data: data,
-    Message: message[code || 'Success']
+    Message: messages[code ?? "Success"]
   }
   res.status(200).json(msg)
-}
-
-module.exports = {
-  makeResponsesException,
-  makeResponsesOkData,
-  makeResponsesError,
-  makeResponsesOk
 }

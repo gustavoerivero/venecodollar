@@ -1,19 +1,19 @@
-'use strict'
+"use strict"
 
-const router = require('express').Router()
+const router = require("express").Router()
 
 /**
- * Express router for handling requests to the '/dolar' endpoint.
+ * Express router for handling requests to the "/dolar" endpoint.
  * @route /dolar
- * @handler require('./RDollar')
+ * @handler require("./RDollar")
  */
-router.use('/dollar', require('./RDollar'))
+router.use("/dollar", require("./RDollar"))
 
 /**
- * Express router for handling requests to the '/euro' endpoint.
+ * Express router for handling requests to the "/euro" endpoint.
  * @route /euro
- * @handler require('./REuro')
+ * @handler require("./REuro")
  */
-router.use('/euro', require('./REuro'))
+router.use("/euro", require("./REuro"))
 
 export default router

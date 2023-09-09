@@ -11,22 +11,11 @@ export type TDollar = {
   dollar: number;
   updatedDate: string;
   image?: string;
+  difference?: number;
+  differencePercentage?: string;
+  tendency?: string;
+  tendencyColor?: string;
 };
-
-/**
- * Represents a type for an array of dollar values in bolivars.
- *
- * @property {string} title - The title or name of the entity that monitors the dollar value.
- * @property {number} dollar - The value of the dollar in bolivars.
- * @property {string} updatedDate - The date when the dollar value was last updated.
- * @property {string} image - The image of the entity.
- */
-export type TDollarArray = {
-  title: string;
-  dollar: number;
-  updatedDate: string;
-  image?: string;
-}[];
 
 /**
  * Represents a type for entities that monitor the dollar value and their corresponding information.

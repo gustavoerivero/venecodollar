@@ -1,5 +1,5 @@
-const router = require('express').Router()
-import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from '../controllers'
+const router = require("express").Router()
+import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from "../controllers"
 
 /**
  * @swagger
@@ -30,7 +30,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        required: true
  *        schema:
  *          type: string
- *          example: '@DolarToday'
+ *          example: "@DolarToday"
  *    responses:
  *      200:
  *        description: The API request has been successful.
@@ -59,7 +59,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        required: true
  *        schema:
  *          type: string
- *          example: '@DolarToday'
+ *          example: "@DolarToday"
  *    responses:
  *      200:
  *        description: The API request has been successful.
@@ -88,7 +88,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        required: true
  *        schema:
  *          type: string
- *          example: '@DolarToday'
+ *          example: "@DolarToday"
  *    responses:
  *      200:
  *        description: The API request has been successful.
@@ -97,9 +97,9 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  */
-router.get('/', getDollar)
-router.get('/entity', getSpecificDollar)
-router.get('/toDollar', calculatorBsToDollar)
-router.get('/toBs', calculatorDollarToBs)
+router.get("/", getDollar)
+router.get("/entity", getSpecificDollar)
+router.get("/toDollar", calculatorBsToDollar)
+router.get("/toBs", calculatorDollarToBs)
 
 module.exports = router

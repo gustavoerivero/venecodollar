@@ -1,0 +1,21 @@
+export type TResponse = {
+  time: number;
+  positiveVotes: number;
+  negativeVotes: number;
+  _id: string;
+  name: string;
+  rank: number;
+  type: string;
+  currency: string;
+  price: number;
+  symbol: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  price24h?: number;
+  isActive: boolean;
+  slug: string;
+  icon: string;
+  subtitle: string;
+  priceOld?: number;
+};

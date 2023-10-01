@@ -1,7 +1,24 @@
-import * as cheerio from "cheerio"
+//import * as cheerio from "cheerio"
 import { TBsDollarCalculated, TDollar, TDollarAverage, TDollarCalculated, TDollarEntity } from "../types/TDollar"
-import { before24hours, convertDate, getDate, getHour } from "../utils/formatDate"
-import { BASE_URL } from "."
+import { formatDate } from "../utils/formatDate"
+import http from "./http"
+import { TResponse } from "../types";
+
+const ABS = 5;
+
+const decimals = (number: number, decimals: number = 2) => Number(number.toFixed(decimals));
+
+const getTendency = (tendency: number) => {
+  if (tendency > 0) {
+    return "Uptrend";
+  } else if (tendency < 0) {
+    return "Downtrend"
+  } else {
+    return "Unchanged";
+  }
+};
+
+const discard = (pivot: number, minus: number = 0, abs: number = 0) => ((Math.abs(pivot - minus) - abs) > abs);
 
 /**
  * Fetches an array with different values of the dollar in bolivars managed by entities that monitor this value.
@@ -13,85 +30,60 @@ import { BASE_URL } from "."
 export const getDollarPrices = async (): Promise<TDollar[] | null> => {
   try {
     // Fetch data from the specified URL
-    const response = await fetch(`${BASE_URL}/dolar-venezuela`, {
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*"
-      }
-    })
 
-    if (!response.ok) {
+    const EXT = "/coins"
+    const api = http();
+
+    const response = await api.get<TResponse[]>(EXT);
+
+    if (!response) {
       throw new Error("Request failed")
     }
 
     // Parse text response from fetch function.
-    const data = await response.text()
+    let { data } = response;
+    const pivot = data[0];
+    const petro = data.find(item => item.name.toLowerCase().includes("petro"));
 
-    // Parse HTML data using Cheerio
-    const cheerioData = cheerio.load(data)
-
-    // Extract relevant information from the parsed HTML
-    const formatHTML = cheerioData("div.row")
-      .find("div.col-xs-12.col-sm-6.col-md-4.col-tabla")
+    data = data.filter(item => item.currency === "VES" && !discard(item.price, pivot.price, ABS));
+    petro && data.push(petro);
 
     const priceResult: TDollar[] = []
 
-    formatHTML.each((_: number, div: any) => {
+    data.forEach(item => {
 
-      const title = cheerioData(div)
-        .find("h6.nombre")
-        .text()
+      let { name, price, icon, updatedAt, price24h } = item;
 
-      const cheerioDate = cheerioData(div)
-        .find("p.fecha")
-        .text()
+      const difference = decimals(price - (price24h ?? 0));
+      const percentage = decimals(difference / price).toString();
 
-      let dateFormat = convertDate(cheerioDate)
+      let color = "Unchanged";
+      const tendency = getTendency(difference);
 
-      const hour = getHour(dateFormat);
-      const date = getDate(dateFormat);
-
-      const updatedDate = before24hours(dateFormat) ? 
-      `${hour} del ${date?.dayWeek.toLowerCase()} ${date?.day} de ${date?.month}, ${date?.year}`
-      : `${date?.dayWeek} ${date?.day} de ${date?.month}, ${date?.year}`
-
-      const text = cheerioData(div)
-        .find("p.precio")
-        .text()
-        .replace(".", "")
-        .replace(",", ".")
-
-      const dollar = Number(text ?? 0)
-
-      const image = cheerioData(div)
-        .find("img")
-        .attr("src")
-
-      const difference = cheerioData(div)
-        .find("p.cambio-num")
-        .text()
-        .replace(",", ".")
+      if (tendency === "Uptrend") {
+        color = "green";
+      } 
       
-        const [tendency, percentage] = cheerioData(div)
-          .find("p.cambio-por")
-          .text()
-          .replace(",", ".")
-          .split(" ")
-
-      const dollarData: TDollar = {
-        title,
-        dollar,
-        updatedDate,
-        image: BASE_URL + image,
-        difference: Number(difference ?? 0),
-        differencePercentage: percentage,
-        tendency: tendency === "▲" ? "Uptrend" : tendency === "▼" ? "Downtrend" : "Unchanged",
-        tendencyColor: tendency === "▲" ? "green" : tendency === "▼" ? "red" : "gray"
+      if (tendency === "Downtrend") {
+        color = "red";
       }
 
-      priceResult.push(dollarData)
+      name = name.replace("\u00F3", "ó")
 
-    })
+      const dollarData: TDollar = {
+        title: name,
+        dollar: decimals(price),
+        updatedDate: formatDate(updatedAt),
+        image: icon,
+        difference: Number(Number(difference ?? 0).toFixed(2)),
+        differencePercentage: percentage,
+        tendency: tendency,
+        tendencyColor: color
+      }
+
+      priceResult.push(dollarData);
+
+    });
 
     // Return the array of dollar values
     return priceResult
@@ -122,8 +114,11 @@ export const getDollarPricesWithAverage = async (): Promise<TDollarAverage | nul
 
       // Calculate average and create entities array
       const prices = priceResult.map((price: TDollar) => {
-        average = price.title !== "Petro" ? Number(average) + Number(price.dollar) : Number(average)
-        length = Number(price.dollar) > 0 && price.title !== "Petro" ? length + 1 : length
+
+        const name = price.title.toLowerCase();
+
+        average = name !== "petro" && name !== "petro bs" ? Number(average) + Number(price.dollar) : Number(average)
+        length = Number(price.dollar) > 0 && name !== "petro" && name !== "petro bs" ? length + 1 : length
 
         let entity: TDollarEntity = {
           entity: price.title,
@@ -170,7 +165,7 @@ export const calculateDollarToBs = async (dollar: number): Promise<TBsDollarCalc
 
     const entities = await getDollarPricesWithAverage()
 
-    let calculatedEntities: TBsDollarCalculated [] = []
+    let calculatedEntities: TBsDollarCalculated[] = []
 
     if (entities?.entities && entities?.entities.length > 0) {
       entities.entities.forEach((item) => {

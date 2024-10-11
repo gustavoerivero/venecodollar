@@ -1,9 +1,11 @@
-node_modules
-
-yarn.lock
 package-lock.json
+yarn.lock
+
+node_modules
+public
+build
+dist
 
 .env
 
-dist
-build
+coverage

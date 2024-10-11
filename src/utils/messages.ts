@@ -1,7 +1,7 @@
 const messages = {
-  "Success": "Success",
-  "Error": "Error",
-  "UnexpectedError": "Unexpected error"
-}
+  Success: 'Success',
+  Error: 'Error',
+  UnexpectedError: 'Unexpected error',
+};
 
-export default messages
+export default messages;

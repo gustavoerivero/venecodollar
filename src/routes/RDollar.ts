@@ -1,5 +1,7 @@
-const router = require("express").Router()
-import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from "../controllers"
+import express from 'express';
+import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDollar } from '../controllers';
+
+const router = express.Router();
 
 /**
  * @swagger
@@ -16,7 +18,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/dollar/entity?name={name}:
  *  get:
  *    summary: Get the dollar values in terms of bolivars (Bs.) given by the control entities filtered by name and, in the event that the name coincides with more than one entity, an average of the same.
@@ -38,7 +40,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/dollar/toDollar?bs={amount}&entity={name}:
  *  get:
  *    summary: Obtain the dollar values of a bolivar amount provided by parameter.
@@ -67,7 +69,7 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/dollar/toBs?dollar={amount}&entity={name}:
  *  get:
  *    summary: Obtain the bolivar values of a dollar amount provided by parameter.
@@ -97,9 +99,9 @@ import { calculatorBsToDollar, calculatorDollarToBs, getDollar, getSpecificDolla
  *      500:
  *        description: Internal server error.
  */
-router.get("/", getDollar)
-router.get("/entity", getSpecificDollar)
-router.get("/toDollar", calculatorBsToDollar)
-router.get("/toBs", calculatorDollarToBs)
+router.get('/', getDollar);
+router.get('/entity', getSpecificDollar);
+router.get('/toDollar', calculatorBsToDollar);
+router.get('/toBs', calculatorDollarToBs);
 
-module.exports = router
+export default router;

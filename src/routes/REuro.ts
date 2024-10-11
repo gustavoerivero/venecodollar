@@ -1,5 +1,7 @@
-const router = require('express').Router()
-import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from '../controllers'
+import express from 'express';
+import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from '../controllers';
+
+const router = express.Router();
 
 /**
  * @swagger
@@ -16,7 +18,7 @@ import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/euro/entity?name={name}:
  *  get:
  *    summary: Get the euro values in terms of bolivars (Bs.) given by the control entities filtered by name and, in the event that the name coincides with more than one entity, an average of the same.
@@ -38,7 +40,7 @@ import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/euro/toeuro?bs={amount}&entity={name}:
  *  get:
  *    summary: Obtain the euro values of a bolivar amount provided by parameter.
@@ -67,7 +69,7 @@ import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from
  *        description: Not found.
  *      500:
  *        description: Internal server error.
- * 
+ *
  * /api/v1/euro/toBs?euro={amount}&entity={name}:
  *  get:
  *    summary: Obtain the bolivar values of a euro amount provided by parameter.
@@ -97,9 +99,9 @@ import { calculatorBsToEuro, calculatorEuroToBs, getEuro, getSpecificEuro } from
  *      500:
  *        description: Internal server error.
  */
-router.get('/', getEuro)
-router.get('/entity', getSpecificEuro)
-router.get('/toEuro', calculatorBsToEuro)
-router.get('/toBs', calculatorEuroToBs)
+router.get('/', getEuro);
+router.get('/entity', getSpecificEuro);
+router.get('/toEuro', calculatorBsToEuro);
+router.get('/toBs', calculatorEuroToBs);
 
-module.exports = router
+export default router;

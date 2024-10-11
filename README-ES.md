@@ -57,10 +57,10 @@ import * as Venecodollar from "venecodollar"
 o
 
 ```TypeScript
-const { 
-  getDollarPrices, 
-  getDollarPricesWithAverage, 
-  calculateBsToDollar, 
+const {
+  getDollarPrices,
+  getDollarPricesWithAverage,
+  calculateBsToDollar,
   calculateDollarToBs,
   getEuroPrices,
   getEuroPricesWithAverage,
@@ -105,19 +105,19 @@ El paquete dispone de dos (4) funciones, getDollarPrices(), getDollarPricesWithA
 
 La librería tiene a su disposición ocho (9) funciones. Cuatro (4) para valores del dólar y cuatro (4) para valores del euro:
 
-* Funciones para valores de dólares:
-  
-- getDollarPrices()
-- getDollarPricesWithAverage()
-- calculateBsToDollar(bs: number)
-- calculateDollarToBs(dollar: number)
-  
-* Funciones para valores de euros:
-  
-- getEuroPrices()
-- getEuroPricesWithAverage()
-- calculateBsToEuro(bs: number)
-- calculateEuroToBs(euro: number)
+- Funciones para valores de dólares:
+
+* getDollarPrices()
+* getDollarPricesWithAverage()
+* calculateBsToDollar(bs: number)
+* calculateDollarToBs(dollar: number)
+
+- Funciones para valores de euros:
+
+* getEuroPrices()
+* getEuroPricesWithAverage()
+* calculateBsToEuro(bs: number)
+* calculateEuroToBs(euro: number)
 
 #### Funciones para valores de dólares
 
@@ -284,7 +284,7 @@ De forma similar a getEuroPrices(), esta función devuelve dos posibles valores.
         "difference": 0.01,
         "differencePercentage": "0.02%",
         "tendency": "Uptrend",
-        "tendencyColor": "green"  
+        "tendencyColor": "green"
       }
     },
     {
@@ -330,7 +330,7 @@ Esta función representaría el cálculo similar al función calculateBsToEuro p
 Del mismo modo, el paquete fue diseñado utilizando TypeScript, por lo que es posible hacer uso de la tipificación de funciones. Para ello, es necesario importar los tipos de datos directamente desde su carpeta:
 
 ```TypeScript
-import { DollarType, DollarArrayType, EntityType, DollarAverageType } from 'venecodollar/src/types/DollarType' 
+import { DollarType, DollarArrayType, EntityType, DollarAverageType } from 'venecodollar/src/types/DollarType'
 ```
 
 O
@@ -543,10 +543,10 @@ Este endpoint permite obtener todas las entidades de seguimiento del euro por el
   GET /api/v2/dollar/toBs?dollar=${dollar}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                |
-| :-------- | :------- | :----------------------------------------- |
-| `dollar`      | `number` | **Required**. Monto en dólares a ser calculado en bolívares. |
-| `entity`      | `string` | Nombre de entidades a obtener |
+| Parameter | Type     | Description                                                  |
+| :-------- | :------- | :----------------------------------------------------------- |
+| `dollar`  | `number` | **Required**. Monto en dólares a ser calculado en bolívares. |
+| `entity`  | `string` | Nombre de entidades a obtener                                |
 
 Este endpoint permite obtener todas las entidades de monitoreo de dólares calculando el valor del dólar pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
 
@@ -556,10 +556,10 @@ Este endpoint permite obtener todas las entidades de monitoreo de dólares calcu
   GET /api/v2/euro/toBs?euro=${euro}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                |
-| :-------- | :------- | :----------------------------------------- |
-| `euro`      | `number` | **Required**. Monto en euros a ser calculado en bolívares. |
-| `entity`      | `string` | Nombre de entidades a obtener |
+| Parameter | Type     | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
+| `euro`    | `number` | **Required**. Monto en euros a ser calculado en bolívares. |
+| `entity`  | `string` | Nombre de entidades a obtener                              |
 
 Este endpoint permite obtener todas las entidades de monitoreo de euros calculando el valor del euro pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
 
@@ -569,10 +569,10 @@ Este endpoint permite obtener todas las entidades de monitoreo de euros calculan
   GET /api/v2/dollar/toDollar?bs=${bs}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                |
-| :-------- | :------- | :----------------------------------------- |
+| Parameter | Type     | Description                                                  |
+| :-------- | :------- | :----------------------------------------------------------- |
 | `bs`      | `number` | **Required**. Monto en bolívares a ser calculado en dólares. |
-| `entity`      | `string` | Nombre de entidades a obtener. |
+| `entity`  | `string` | Nombre de entidades a obtener.                               |
 
 Este endpoint permite obtener todas las entidades de monitoreo de dólares calculando el valor del dólar pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
 
@@ -582,10 +582,10 @@ Este endpoint permite obtener todas las entidades de monitoreo de dólares calcu
   GET /api/v2/euro/toEuro?bs=${bs}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                |
-| :-------- | :------- | :----------------------------------------- |
+| Parameter | Type     | Description                                                |
+| :-------- | :------- | :--------------------------------------------------------- |
 | `bs`      | `number` | **Required**. Monto en bolívares a ser calculado en euros. |
-| `entity`      | `string` | Nombre de entidades a obtener. |
+| `entity`  | `string` | Nombre de entidades a obtener.                             |
 
 Este endpoint permite obtener todas las entidades de monitoreo de euros calculando el valor del euro pasado como parámetro en la ruta en términos de bolívares. Si se pasa como parámetro en la ruta el nombre de una entidad por la cual se desea filtrar, el endpoint devolverá sólo las entidades de monitoreo de dólares que coincidan con el parámetro pasado.
 
@@ -600,4 +600,5 @@ Por favor, asegúrese de actualizar las pruebas según corresponda.
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ---
+
 ⌨️ hecho con ❤️ por [gustavoerivero](https://github.com/gustavoerivero)

@@ -1,0 +1,7 @@
+dist
+build
+node_modules
+
+.changeset
+.husky
+coverage

@@ -57,10 +57,10 @@ import * as Venecodollar from "venecodollar"
 Or
 
 ```TypeScript
-const { 
-  getDollarPrices, 
-  getDollarPricesWithAverage, 
-  calculateBsToDollar, 
+const {
+  getDollarPrices,
+  getDollarPricesWithAverage,
+  calculateBsToDollar,
   calculateDollarToBs,
   getEuroPrices,
   getEuroPricesWithAverage,
@@ -103,19 +103,19 @@ const getAverage = () => {
 
 The package has at its disposal eight (8) functions, four (4) to dollar values and four (4) to euro values:
 
-* Dollar functions:
-  
-- getDollarPrices()
-- getDollarPricesWithAverage()
-- calculateBsToDollar(bs: number)
-- calculateDollarToBs(dollar: number)
-  
-* Euro functions:
-  
-- getEuroPrices()
-- getEuroPricesWithAverage()
-- calculateBsToEuro(bs: number)
-- calculateEuroToBs(euro: number)
+- Dollar functions:
+
+* getDollarPrices()
+* getDollarPricesWithAverage()
+* calculateBsToDollar(bs: number)
+* calculateDollarToBs(dollar: number)
+
+- Euro functions:
+
+* getEuroPrices()
+* getEuroPricesWithAverage()
+* calculateBsToEuro(bs: number)
+* calculateEuroToBs(euro: number)
 
 #### Dollar functions
 
@@ -282,7 +282,7 @@ Similarly to getEuroPrices(), this function returns two possible values. In case
         "difference": 0.01,
         "differencePercentage": "0.02%",
         "tendency": "Uptrend",
-        "tendencyColor": "green"  
+        "tendencyColor": "green"
       }
     },
     {
@@ -328,7 +328,7 @@ This function would represent the calculation similar to the calculateBsToEuro f
 Likewise, the package was designed using TypeScript, so it is possible to make use of function typing. To do so, it is necessary to import the data types directly from your folder:
 
 ```TypeScript
-import { TDollar, TDollarEntity, TDollarAverage, TDollarCalculated, TBsCalculated, TDollarCalculatedAverage, TBsCalculatedAverage } from 'venecodollar/src/types/DollarType' 
+import { TDollar, TDollarEntity, TDollarAverage, TDollarCalculated, TBsCalculated, TDollarCalculatedAverage, TBsCalculatedAverage } from 'venecodollar/src/types/DollarType'
 ```
 
 Or
@@ -554,10 +554,10 @@ This endpoint allows obtaining all the dollar monitoring entities while calculat
   GET /api/v2/euro/toBs?euro=${euro}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                                   |
-| :-------- | :------- | :------------------------------------------------------------ |
-| `euro`  | `number` | **Required**. Amount in euros to be calculated in bolivars. |
-| `entity`  | `string` | Name of entities to fetch                                     |
+| Parameter | Type     | Description                                                 |
+| :-------- | :------- | :---------------------------------------------------------- |
+| `euro`    | `number` | **Required**. Amount in euros to be calculated in bolivars. |
+| `entity`  | `string` | Name of entities to fetch                                   |
 
 This endpoint allows obtaining all the euro monitoring entities while calculating the value of the euro passed as a parameter in the path in terms of bolivars. If the name of an entity to be filtered by is passed as a parameter in the path, the endpoint will return only the dollar monitoring entities that match the parameter passed.
 
@@ -580,10 +580,10 @@ This endpoint allows obtaining all the dollar monitoring entities while calculat
   GET /api/v2/euro/toEuro?bs=${bs}&entity={entity}
 ```
 
-| Parameter | Type     | Description                                                   |
-| :-------- | :------- | :------------------------------------------------------------ |
+| Parameter | Type     | Description                                                 |
+| :-------- | :------- | :---------------------------------------------------------- |
 | `bs`      | `number` | **Required**. Amount in bolivars to be calculated in euros. |
-| `entity`  | `string` | Name of entities to fetch                                     |
+| `entity`  | `string` | Name of entities to fetch                                   |
 
 This endpoint allows obtaining all the euro monitoring entities while calculating the value of the euro passed as a parameter in the path in terms of bolivars. If the name of an entity to be filtered by is passed as a parameter in the path, the endpoint will return only the dollar monitoring entities that match the parameter passed.
 
@@ -598,4 +598,5 @@ Please make sure to update tests as appropriate.
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ---
+
 ⌨️ made with ❤️ by [gustavoerivero](https://github.com/gustavoerivero)

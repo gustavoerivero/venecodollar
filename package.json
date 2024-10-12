@@ -1,6 +1,6 @@
 {
   "name": "venecodollar",
-  "version": "2.3.4",
+  "version": "2.3.6",
   "description": "Library to consult the different dollar and euro values and their average in terms of bolivars. The data is obtained from https://monitordolarvenezuela.com/",
   "keywords": [
     "dollar",
@@ -20,7 +20,7 @@
     "build:start": "npm run deploy-build & npm run package-build & npm run devWindows",
     "release": "npm run build && changeset publish",
     "update:version": "changeset",
-    "publish": "npm run release & npm publish --access=public",
+    "publish": "npm run release & npm publish",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/gustavoerivero/venecodollar#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gustavoerivero/venecodollar"
+    "url": "git+https://github.com/gustavoerivero/venecodollar.git"
   },
   "private": false,
   "dependencies": {

@@ -4,6 +4,7 @@
 .vercel
 coverage
 public
+src
 
 node_modules
 

@@ -1,7 +1,6 @@
 .changeset
 .github
 .husky
-.vercel
 coverage
 public
 
@@ -14,16 +13,13 @@ package-lock.json
 babel.config.js
 eslint.config.mjs
 jest.config.ts
+.env
 .env.example
 .prettierrc.json
 
 .gitignore
 .npmignore
 .prettierignore
-.vercelignore
-
-nodemon.json
-vercel.json
 
 **/*/*.test.ts
 **/*/*.test.js

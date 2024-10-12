@@ -1,6 +1,7 @@
 package-lock.json
 yarn.lock
 
+.vercel
 node_modules
 public
 build

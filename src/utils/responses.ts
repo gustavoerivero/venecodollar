@@ -1,13 +1,15 @@
 import { Response } from 'express';
 import messages from './messages';
 
+export type Code = 'Success' | 'UnexpectedError' | 'Error';
+
 /**
  * Function that generates a JSON response with an error message for HTTP 404 status code.
  * @param res Response object from Express.
  * @param err Error object to be included in the response.
  * @param code Optional code parameter to specify the error message. Defaults to "UnexpectedError".
  */
-export const makeResponsesError = (res: Response, err: Error, code?: 'Success' | 'UnexpectedError' | 'Error') => {
+export const makeResponsesError = (res: Response, err: Error, code?: Code) => {
   const msg = {
     OK: 0,
     Error: err,

@@ -35,7 +35,7 @@ export const getEuroPrices = async (): Promise<TEuro[] | null> => {
 
     const priceResult: TEuro[] = [];
 
-    formatHTML.each((_: number, div: any) => {
+    formatHTML.each((_: number, div) => {
       const title = cheerioData(div).find('h6.nombre').text();
 
       const cheerioDate = cheerioData(div).find('p.fecha').text();
@@ -59,6 +59,17 @@ export const getEuroPrices = async (): Promise<TEuro[] | null> => {
 
       const [tendency, percentage] = cheerioData(div).find('p.cambio-por').text().replace(',', '.').split(' ');
 
+      let tendencyName = 'Unchanged';
+      let tendencyColor = 'gray';
+
+      if (tendency === '▲') {
+        tendencyName = 'Uptrend';
+        tendencyColor = 'green';
+      } else if (tendency === '▼') {
+        tendencyName = 'Downtrend';
+        tendencyColor = 'red';
+      }
+
       const euroData: TEuro = {
         title: title,
         euro: euro,
@@ -66,8 +77,8 @@ export const getEuroPrices = async (): Promise<TEuro[] | null> => {
         image: BASE_URL + image,
         difference: Number(difference ?? 0),
         differencePercentage: percentage,
-        tendency: tendency === '▲' ? 'Uptrend' : tendency === '▼' ? 'Downtrend' : 'Unchanged',
-        tendencyColor: tendency === '▲' ? 'green' : tendency === '▼' ? 'red' : 'gray',
+        tendency: tendencyName,
+        tendencyColor: tendencyColor,
       };
 
       priceResult.push(euroData);

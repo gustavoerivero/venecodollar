@@ -21,7 +21,7 @@ const options = { timeZone };
  * @returns {string} The formatted hour in HH:mm AM/PM format.
  * @throws {Error} If the date value is missing or in an invalid format.
  */
-export const getHour = (date: string | Date | null): string => {
+export const getHour = (date?: string | Date): string => {
   try {
     if (!date) {
       throw Error('The date value must exist in date or string format.');
@@ -139,7 +139,7 @@ export const before24hours = (date: string | Date | null): boolean => {
 };
 
 export const convertDate = (text: string) => {
-  const [_, period] = text.split('Actualizó hace');
+  const [, period] = text.split('Actualizó hace');
 
   let [unit, time] = period.split(' ').slice(-2);
 

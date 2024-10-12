@@ -1,9 +1,10 @@
 //import * as cheerio from "cheerio"
 import { TBsDollarCalculated, TDollar, TDollarAverage, TDollarCalculated, TDollarEntity } from '../types/TDollar';
 import { formatDate } from '../utils/formatDate';
-import http from './http';
 import { TResponse } from '../types';
-import { AxiosResponse } from 'axios';
+import { HttpResponse } from './client/interfaces';
+
+import api from './client/http';
 
 const ABS = 5;
 
@@ -20,7 +21,7 @@ const getTendency = (tendency: number) => {
 };
 
 const discard = (pivot: number, minus: number = 0, abs: number = 0) => Math.abs(pivot - minus) - abs > abs;
-const getEntity = (data: AxiosResponse<TResponse[], any>, name: string) =>
+const getEntity = (data: HttpResponse<TResponse[]>, name: string) =>
   data.data.find((item) => item.name.toLowerCase().includes(name));
 
 /**
@@ -35,7 +36,6 @@ export const getDollarPrices = async (): Promise<TDollar[] | null> => {
     // Fetch data from the specified URL
 
     const EXT = '/coins';
-    const api = http();
 
     const response = await api.get<TResponse[]>(EXT);
 

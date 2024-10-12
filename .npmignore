@@ -2,6 +2,8 @@
 .github
 .husky
 coverage
+public
+
 
 node_modules
 
@@ -12,10 +14,15 @@ package-lock.json
 babel.config.js
 eslint.config.mjs
 jest.config.ts
+.env.example
+.prettierrc.json
 
 .gitignore
 .npmignore
 .prettierignore
+
+nodemon.json
+vercel.json
 
 **/*/*.test.ts
 **/*/*.test.js

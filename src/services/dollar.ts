@@ -49,9 +49,16 @@ export const getDollarPrices = async (): Promise<TDollar[] | null> => {
     const bcv = getEntity(response, 'bcv');
     const petro = getEntity(response, 'petro');
 
+    const average = {
+      ...pivot,
+      name: 'Promedio',
+      price: (bcv && pivot) ? (bcv.price + pivot?.price) / 2 : 0
+    };
+
     data = data.filter(
       (item) => item.currency === 'VES' && !discard(item.price, pivot.price, ABS) && item !== bcv && item !== petro,
     );
+    (bcv && pivot) && data.unshift(average);
     bcv && data.unshift(bcv);
     petro && data.push(petro);
 
